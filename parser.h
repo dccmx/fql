@@ -1,0 +1,12 @@
+#define TK_SELECT                          1
+#define TK_DISTINCT                        2
+#define TK_NAME                            3
+#define TK_TIME                            4
+#define TK_FROM                            5
+#define TK_FILE_NAME                       6
+#define TK_COMMA                           7
+#define TK_WHERE                           8
+#define TK_ORDER                           9
+#define TK_BY                             10
+#define TK_LIMIT                          11
+#define TK_INTEGER                        12
