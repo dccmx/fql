@@ -3,9 +3,16 @@
 
 #include "ast.h"
 
-class Token {
+struct Token {
+  Token(int tid, char *s, char *e)
+      : id(tid), ps(s), pe(e) {}
+
+  int id;
+  char *ps, *pe;
+
+  int value;
 };
 
-AST *Parse(char *str);
+Stmt *Parse(char *str);
 
 #endif // LEXER_H_

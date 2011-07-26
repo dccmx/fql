@@ -58,7 +58,7 @@
 **                       defined, then do no error processing.
 */
 #define YYCODETYPE unsigned char
-#define YYNOCODE 24
+#define YYNOCODE 38
 #define YYACTIONTYPE unsigned char
 #define ParseTOKENTYPE Token*
 typedef union {
@@ -72,8 +72,8 @@ typedef union {
 #define ParseARG_PDECL
 #define ParseARG_FETCH
 #define ParseARG_STORE
-#define YYNSTATE 22
-#define YYNRULE 15
+#define YYNSTATE 41
+#define YYNRULE 25
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
 #define YY_ACCEPT_ACTION  (YYNSTATE+YYNRULE+1)
 #define YY_ERROR_ACTION   (YYNSTATE+YYNRULE)
@@ -143,30 +143,40 @@ static const YYMINORTYPE yyzerominor = { 0 };
 **  yy_default[]       Default action for each state.
 */
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */    38,    9,   16,   16,    3,    4,   17,   21,    1,    8,
- /*    10 */    18,    5,   10,    6,   20,   11,    7,   12,   14,   22,
- /*    20 */     2,   15,   13,   19,
+ /*     0 */     6,   13,   67,   19,   36,   18,   32,   32,   32,   26,
+ /*    10 */    26,   28,    8,    9,   31,   31,    5,   27,   15,    6,
+ /*    20 */    30,   27,   14,   37,   13,   17,    4,    4,   10,   16,
+ /*    30 */    40,    1,    2,   21,   20,   26,   11,   33,   12,   41,
+ /*    40 */    24,   39,   25,   23,    3,   29,   68,   38,   68,   68,
+ /*    50 */     7,   34,   68,   22,   35,
 };
 static const YYCODETYPE yy_lookahead[] = {
- /*     0 */    14,   15,    3,    4,    1,   17,   17,    2,   16,    5,
- /*    10 */     8,   18,   11,   19,    6,    9,   20,   22,   21,    0,
- /*    20 */    10,   12,    7,    6,
+ /*     0 */    30,    5,   22,   23,   34,   35,    8,    9,   10,    3,
+ /*    10 */     3,    4,   25,    1,   18,   19,   25,   30,   12,   30,
+ /*    20 */    36,   30,   32,   34,    5,    6,   13,   14,   26,   32,
+ /*    30 */     2,   15,   24,   16,   20,    3,   27,   11,   28,    0,
+ /*    40 */    29,    7,   11,    5,   17,   30,   37,    7,   37,   37,
+ /*    50 */    30,   33,   37,   31,   33,
 };
-#define YY_SHIFT_USE_DFLT (-2)
-#define YY_SHIFT_MAX 13
+#define YY_SHIFT_USE_DFLT (-5)
+#define YY_SHIFT_MAX 23
 static const signed char yy_shift_ofst[] = {
- /*     0 */     3,   -1,   -1,    5,    4,    2,    6,    1,    8,   19,
- /*    10 */     9,   10,   15,   17,
+ /*     0 */    12,    6,    7,    7,    6,   -4,   -2,   -2,   19,   28,
+ /*    10 */    16,   17,   14,   32,   26,   32,   26,   34,   13,   39,
+ /*    20 */    31,   27,   38,   40,
 };
-#define YY_REDUCE_USE_DFLT (-15)
-#define YY_REDUCE_MAX 8
+#define YY_REDUCE_USE_DFLT (-31)
+#define YY_REDUCE_MAX 17
 static const signed char yy_reduce_ofst[] = {
- /*     0 */   -14,  -12,  -11,   -8,   -7,   -6,   -4,   -3,   -5,
+ /*     0 */   -20,  -30,  -13,   -9,  -11,  -16,  -10,   -3,    2,    8,
+ /*    10 */     9,   10,   11,   15,   18,   20,   21,   22,
 };
 static const YYACTIONTYPE yy_default[] = {
- /*     0 */    37,   37,   37,   25,   28,   32,   33,   36,   37,   37,
- /*    10 */    37,   37,   27,   37,   23,   35,   26,   34,   31,   30,
- /*    20 */    29,   24,
+ /*     0 */    66,   66,   66,   66,   66,   66,   66,   66,   50,   44,
+ /*    10 */    60,   61,   65,   66,   66,   66,   66,   66,   59,   66,
+ /*    20 */    66,   66,   49,   66,   42,   64,   45,   46,   47,   48,
+ /*    30 */    62,   63,   53,   54,   55,   56,   57,   58,   52,   51,
+ /*    40 */    43,
 };
 #define YY_SZ_ACTTAB (int)(sizeof(yy_action)/sizeof(yy_action[0]))
 
@@ -260,12 +270,16 @@ void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
 /* For tracing shifts, the names of all terminals and nonterminals
 ** are required.  The following table supplies these names */
 static const char *const yyTokenName[] = { 
-  "$",             "SELECT",        "DISTINCT",      "NAME",        
-  "TIME",          "FROM",          "FILE_NAME",     "COMMA",       
-  "WHERE",         "ORDER",         "BY",            "LIMIT",       
-  "INTEGER",       "error",         "stmt",          "select",      
+  "$",             "SELECT",        "DISTINCT",      "ID",          
+  "STAR",          "COMMA",         "FROM",          "FILE_NAME",   
+  "GT",            "LT",            "EQ",            "INTEGER",     
+  "NOT",           "AND",           "OR",            "WHERE",       
+  "ORDER",         "BY",            "ASC",           "DESC",        
+  "LIMIT",         "error",         "stmt",          "select",      
   "distinct",      "attrlist",      "from",          "where",       
-  "orderby",       "limit",         "folderlist",  
+  "orderby",       "limit",         "attr",          "folderlist",  
+  "op",            "value",         "condition",     "conditionlist",
+  "order",       
 };
 #endif /* NDEBUG */
 
@@ -277,17 +291,27 @@ static const char *const yyRuleName[] = {
  /*   1 */ "select ::= SELECT distinct attrlist from where orderby limit",
  /*   2 */ "distinct ::= DISTINCT",
  /*   3 */ "distinct ::=",
- /*   4 */ "attrlist ::= NAME|TIME",
- /*   5 */ "from ::= FROM folderlist",
- /*   6 */ "from ::=",
- /*   7 */ "folderlist ::= FILE_NAME",
- /*   8 */ "folderlist ::= folderlist COMMA FILE_NAME",
- /*   9 */ "where ::= WHERE",
- /*  10 */ "where ::=",
- /*  11 */ "orderby ::=",
- /*  12 */ "orderby ::= ORDER BY attrlist",
- /*  13 */ "limit ::= LIMIT INTEGER",
- /*  14 */ "limit ::=",
+ /*   4 */ "attr ::= ID",
+ /*   5 */ "attrlist ::= attr",
+ /*   6 */ "attrlist ::= STAR",
+ /*   7 */ "attrlist ::= attrlist COMMA attr",
+ /*   8 */ "from ::= FROM folderlist",
+ /*   9 */ "from ::=",
+ /*  10 */ "folderlist ::= FILE_NAME",
+ /*  11 */ "folderlist ::= folderlist COMMA FILE_NAME",
+ /*  12 */ "op ::= GT|LT|EQ",
+ /*  13 */ "value ::= INTEGER",
+ /*  14 */ "condition ::= attr op value",
+ /*  15 */ "condition ::= NOT attr op value",
+ /*  16 */ "conditionlist ::= condition",
+ /*  17 */ "conditionlist ::= conditionlist AND|OR condition",
+ /*  18 */ "where ::= WHERE conditionlist",
+ /*  19 */ "where ::=",
+ /*  20 */ "orderby ::=",
+ /*  21 */ "orderby ::= ORDER BY attrlist order",
+ /*  22 */ "order ::= ASC|DESC",
+ /*  23 */ "limit ::= LIMIT INTEGER",
+ /*  24 */ "limit ::=",
 };
 #endif /* NDEBUG */
 
@@ -592,21 +616,31 @@ static const struct {
   YYCODETYPE lhs;         /* Symbol on the left-hand side of the rule */
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
-  { 14, 1 },
-  { 15, 7 },
-  { 16, 1 },
-  { 16, 0 },
-  { 17, 1 },
-  { 18, 2 },
-  { 18, 0 },
   { 22, 1 },
-  { 22, 3 },
-  { 19, 1 },
-  { 19, 0 },
-  { 20, 0 },
-  { 20, 3 },
-  { 21, 2 },
-  { 21, 0 },
+  { 23, 7 },
+  { 24, 1 },
+  { 24, 0 },
+  { 30, 1 },
+  { 25, 1 },
+  { 25, 1 },
+  { 25, 3 },
+  { 26, 2 },
+  { 26, 0 },
+  { 31, 1 },
+  { 31, 3 },
+  { 32, 1 },
+  { 33, 1 },
+  { 34, 3 },
+  { 34, 4 },
+  { 35, 1 },
+  { 35, 3 },
+  { 27, 2 },
+  { 27, 0 },
+  { 28, 0 },
+  { 28, 4 },
+  { 36, 1 },
+  { 29, 2 },
+  { 29, 0 },
 };
 
 static void yy_accept(yyParser*);  /* Forward Declaration */
@@ -666,17 +700,27 @@ static void yy_reduce(
       /* (1) select ::= SELECT distinct attrlist from where orderby limit */ yytestcase(yyruleno==1);
       /* (2) distinct ::= DISTINCT */ yytestcase(yyruleno==2);
       /* (3) distinct ::= */ yytestcase(yyruleno==3);
-      /* (4) attrlist ::= NAME|TIME */ yytestcase(yyruleno==4);
-      /* (5) from ::= FROM folderlist */ yytestcase(yyruleno==5);
-      /* (6) from ::= */ yytestcase(yyruleno==6);
-      /* (7) folderlist ::= FILE_NAME */ yytestcase(yyruleno==7);
-      /* (8) folderlist ::= folderlist COMMA FILE_NAME */ yytestcase(yyruleno==8);
-      /* (9) where ::= WHERE */ yytestcase(yyruleno==9);
-      /* (10) where ::= */ yytestcase(yyruleno==10);
-      /* (11) orderby ::= */ yytestcase(yyruleno==11);
-      /* (12) orderby ::= ORDER BY attrlist */ yytestcase(yyruleno==12);
-      /* (13) limit ::= LIMIT INTEGER */ yytestcase(yyruleno==13);
-      /* (14) limit ::= */ yytestcase(yyruleno==14);
+      /* (4) attr ::= ID */ yytestcase(yyruleno==4);
+      /* (5) attrlist ::= attr */ yytestcase(yyruleno==5);
+      /* (6) attrlist ::= STAR */ yytestcase(yyruleno==6);
+      /* (7) attrlist ::= attrlist COMMA attr */ yytestcase(yyruleno==7);
+      /* (8) from ::= FROM folderlist */ yytestcase(yyruleno==8);
+      /* (9) from ::= */ yytestcase(yyruleno==9);
+      /* (10) folderlist ::= FILE_NAME */ yytestcase(yyruleno==10);
+      /* (11) folderlist ::= folderlist COMMA FILE_NAME */ yytestcase(yyruleno==11);
+      /* (12) op ::= GT|LT|EQ */ yytestcase(yyruleno==12);
+      /* (13) value ::= INTEGER */ yytestcase(yyruleno==13);
+      /* (14) condition ::= attr op value */ yytestcase(yyruleno==14);
+      /* (15) condition ::= NOT attr op value */ yytestcase(yyruleno==15);
+      /* (16) conditionlist ::= condition */ yytestcase(yyruleno==16);
+      /* (17) conditionlist ::= conditionlist AND|OR condition */ yytestcase(yyruleno==17);
+      /* (18) where ::= WHERE conditionlist */ yytestcase(yyruleno==18);
+      /* (19) where ::= */ yytestcase(yyruleno==19);
+      /* (20) orderby ::= */ yytestcase(yyruleno==20);
+      /* (21) orderby ::= ORDER BY attrlist order */ yytestcase(yyruleno==21);
+      /* (22) order ::= ASC|DESC */ yytestcase(yyruleno==22);
+      /* (23) limit ::= LIMIT INTEGER */ yytestcase(yyruleno==23);
+      /* (24) limit ::= */ yytestcase(yyruleno==24);
         break;
   };
   yygoto = yyRuleInfo[yyruleno].lhs;

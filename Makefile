@@ -6,8 +6,8 @@
 
 VERSION    = 0.1
 
-OBJFILES   = fql.cc ast.cc lexer.c
-INCFILES   = lexer.h ast.h
+OBJFILES   = fql.cc ast.cc lexer.cc table.cc
+INCFILES   = lexer.h ast.h table.h
 
 CFLAGS_GEN = -Wall -g $(CFLAGS) -DVERSION=\"$(VERSION)\"
 CFLAGS_DBG = -ggdb $(CFLAGS_GEN)
@@ -23,9 +23,9 @@ all: fql
 	@echo "Having problems with it? Send complains and bugs to dccmx@dccmx.com"
 	@echo
 
-lexer.c: lexer.rl parser.y
+lexer.cc: lexer.rl parser.y
 	lemon parser.y
-	ragel -o lexer.c -C lexer.rl
+	ragel -o lexer.cc -C lexer.rl
 
 fql: fql.cc $(OBJFILES) $(INCFILES)
 	$(CXX) $(LDFLAGS) -o fql $(CFLAGS_OPT) $(LIBS) $^

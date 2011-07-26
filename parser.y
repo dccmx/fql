@@ -7,13 +7,16 @@
 
 stmt ::= select.
 
-select ::= SELECT distinct attrlist from where orderby limit. {
-}
+select ::= SELECT distinct attrlist from where orderby limit.
 
 distinct ::= DISTINCT.
 distinct ::= .
 
-attrlist ::= NAME|TIME.
+attr ::= ID.
+
+attrlist ::= attr.
+attrlist ::= STAR.
+attrlist ::= attrlist COMMA attr.
 
 from ::= FROM folderlist.
 from ::= .
@@ -21,11 +24,23 @@ from ::= .
 folderlist ::= FILE_NAME.
 folderlist ::= folderlist COMMA FILE_NAME.
 
-where ::= WHERE.
+op ::= GT|LT|EQ.
+
+value ::= INTEGER.
+
+condition ::= attr op value.
+condition ::= NOT attr op value.
+
+conditionlist ::= condition.
+conditionlist ::= conditionlist AND|OR condition.
+
+where ::= WHERE conditionlist.
 where ::= .
 
 orderby ::= .
-orderby ::= ORDER BY attrlist.
+orderby ::= ORDER BY attrlist order.
+
+order ::= ASC|DESC.
 
 limit ::= LIMIT INTEGER.
 limit ::= .
