@@ -1,10 +1,10 @@
 #define TK_SELECT                          1
 #define TK_DISTINCT                        2
 #define TK_ID                              3
-#define TK_STAR                            4
-#define TK_COMMA                           5
-#define TK_FROM                            6
-#define TK_FILE_NAME                       7
+#define TK_STRING                          4
+#define TK_STAR                            5
+#define TK_COMMA                           6
+#define TK_FROM                            7
 #define TK_GT                              8
 #define TK_LT                              9
 #define TK_EQ                             10

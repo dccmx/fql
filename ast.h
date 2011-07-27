@@ -16,17 +16,26 @@ class Select;
 class Stmt {
  public:
   Table *Execute();
+  void set_select(Select *select) { select_ = select; }
+
  private:
-  Select *select;
+  Select *select_;
 };
 
 class Select {
  public:
+  Select() : distinct_(false) {}
+
+ public:
   Table *Execute();
+  void set_attrs(const vector<string> attrs) { attrs_ = attrs; }
+  void set_folders(const vector<string> folders) { folders_ = folders; }
+  void set_distinct(bool distinct) { distinct_ = distinct; }
 
  private:
-  vector<string> attrs;
-  vector<string> folders;
+  bool distinct_;
+  vector<string> attrs_;
+  vector<string> folders_;
 };
 
 #endif // AST_H_

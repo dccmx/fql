@@ -4,11 +4,10 @@
 #include "ast.h"
 
 struct Token {
-  Token(int tid, char *s, char *e)
-      : id(tid), ps(s), pe(e) {}
+  Token(int tid, char *s, char *e);
 
   int id;
-  char *ps, *pe;
+  char str[1024];
 
   int value;
 };

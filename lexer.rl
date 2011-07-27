@@ -5,34 +5,39 @@
 #include "parser.h"
 #include "parser.c"
 
-#define INTEGER() { tk = new Token(TK_INTEGER, ts, te); \
-  tk->value = atoi(tk->ps); \
+#define INTEGER() { \
+  tk = new Token(TK_INTEGER, ts, te); \
+  tk->value = atoi(tk->str); \
   Parse(parser, TK_INTEGER, tk); \
   printf("int: %d\n", tk->value); \
 }
 
-#define KEYWORD(ID) { Parse(parser, ID, NULL); \
+#define KEYWORD(ID) { \
+  tk = new Token(ID, ts, te); \
+  Parse(parser, ID, tk); \
   printf("keyword: ");\
-  for (char *p = ts; p < te; p++) printf("%c", *p);\
-  printf("\n");\
+  printf("%s\n", tk->str);\
 }
 
-#define SYMBOL(ID) { Parse(parser, ID, NULL); \
+#define SYMBOL(ID) { \
+  tk = new Token(ID, ts, te); \
+  Parse(parser, ID, tk); \
   printf("symbol: ");\
-  for (char *p = ts; p < te; p++) printf("%c", *p);\
-  printf("\n");\
+  printf("%s\n", tk->str);\
 }
 
 #define STRING() { \
+  tk = new Token(TK_STRING, ts, te); \
+  Parse(parser, TK_STRING, tk); \
   printf("string: ");\
-  for (char *p = ts + 1; p < te - 1; p++) printf("%c", *p);\
-  printf("\n");\
+  printf("%s\n", tk->str);\
 }
 
 #define ID() { \
+  tk = new Token(TK_ID, ts, te); \
+  Parse(parser, TK_ID, tk); \
   printf("id: ");\
-  for (char *p = ts; p < te; p++) printf("%c", *p);\
-  printf("\n");\
+  printf("%s\n", tk->str);\
 }
 %%{
   machine lexer;
@@ -87,7 +92,6 @@ Stmt *Parse(char *str) {
     printf("error: %s\n", p);
   }
 
-  Parse(parser, TK_INTEGER, NULL);
   Parse(parser, 0, 0);
 
   ParseFree(parser, free);

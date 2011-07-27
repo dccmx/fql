@@ -1,35 +1,62 @@
 %include {
 #include <assert.h>
 }
+%token_destructor { delete $$; }
+
+%parse_accept {
+}
+
+%syntax_error {
+    printf("parse error\n");
+}
+
+%stack_overflow {
+    printf("Stack overflowed\n");
+}
 
 %token_type {Token*}
 %token_prefix TK_
 
-stmt ::= select.
+%type stmt {Stmt*}
+%type select {Select*}
 
-select ::= SELECT distinct attrlist from where orderby limit.
+stmt(A) ::= select(B). {
+  A->set_select(B);
+}
+
+select(A) ::= SELECT distinct(D) attrlist(C) from where orderby limit. {
+  if (D != NULL) A->set_distinct(true);
+  A->set_attrs(*C);
+}
 
 distinct ::= DISTINCT.
 distinct ::= .
 
-attr ::= ID.
+name ::= ID|STRING.
 
-attrlist ::= attr.
+%type attrlist {vector<string>*}
+attrlist(A) ::= name(B). {
+  //A = new vector<string>();
+  printf("%s\n", B->str);
+  printf("%d\n", A);
+  //A->push_back(string(B->str));
+}
+
 attrlist ::= STAR.
-attrlist ::= attrlist COMMA attr.
+attrlist ::= attrlist COMMA name.
 
 from ::= FROM folderlist.
 from ::= .
 
-folderlist ::= FILE_NAME.
-folderlist ::= folderlist COMMA FILE_NAME.
+folderlist ::= name.
+folderlist ::= folderlist COMMA name.
 
 op ::= GT|LT|EQ.
 
-value ::= INTEGER.
+value ::= INTEGER|STRING.
 
-condition ::= attr op value.
-condition ::= NOT attr op value.
+condition ::= ID op value.
+condition ::= NOT ID op value.
 
 conditionlist ::= condition.
 conditionlist ::= conditionlist AND|OR condition.
