@@ -6,12 +6,12 @@
 
 VERSION    = 0.1
 
-OBJFILES   = fql.cc ast.cc lexer.cc lexer.rl.cc table.cc variant.cc sys.cc
+OBJFILES   = fql.cc ast.cc lexer.cc lexer-rl.cc table.cc variant.cc sys.cc
 INCFILES   = lexer.h ast.h table.h variant.h sys.h
 
 CFLAGS_GEN = -Wall -g $(CFLAGS) -DVERSION=\"$(VERSION)\"
 CFLAGS_DBG = -ggdb $(CFLAGS_GEN)
-CFLAGS_OPT = -O3 -Wno-format -Wno-unused-result $(CFLAGS_GEN)
+CFLAGS_OPT = -O3 -Wno-format -Wno-unused-variable -Wno-unused-result $(CFLAGS_GEN)
 
 LDFLAGS   += 
 LIBS      += 
@@ -23,9 +23,12 @@ all: fql
 	@echo "Having problems with it? Send complains and bugs to dccmx@dccmx.com"
 	@echo
 
-lexer.rl.cc: lexer.rl parser.y
+lexer-rl.cc: lexer.rl parser.y
 	lemon parser.y
-	ragel -o lexer.rl.cc -C lexer.rl
+	ragel -o lexer-rl.cc -C lexer.rl
+
+debug: fql.cc $(OBJFILES) $(INCFILES)
+	$(CXX) $(LDFLAGS) -o fql $(CFLAGS_DBG) $(LIBS) $^
 
 fql: fql.cc $(OBJFILES) $(INCFILES)
 	$(CXX) $(LDFLAGS) -o fql $(CFLAGS_OPT) $(LIBS) $^

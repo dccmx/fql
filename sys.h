@@ -3,6 +3,6 @@
 
 #include "table.h"
 
-void ListDir(Table *tb, const char *dir);
+void ListDir(Table *tb, const string& dir);
 
 #endif // SYS_H_

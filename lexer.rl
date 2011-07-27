@@ -8,37 +8,38 @@
 #define INTEGER() { \
   tk = new Token(TK_INTEGER, ts, te); \
   tk->value = atoi(tk->str); \
-  Parse(parser, TK_INTEGER, tk); \
+  Parse(parser, TK_INTEGER, tk, &stmt); \
   printf("int: %d\n", tk->value); \
 }
 
 #define KEYWORD(ID) { \
   tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk); \
+  Parse(parser, ID, tk, &stmt); \
   printf("keyword: ");\
   printf("%s\n", tk->str);\
 }
 
 #define SYMBOL(ID) { \
   tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk); \
+  Parse(parser, ID, tk, &stmt); \
   printf("symbol: ");\
   printf("%s\n", tk->str);\
 }
 
 #define STRING() { \
-  tk = new Token(TK_STRING, ts, te); \
-  Parse(parser, TK_STRING, tk); \
+  tk = new Token(TK_STRING, ts + 1, te - 1); \
+  Parse(parser, TK_STRING, tk, &stmt); \
   printf("string: ");\
   printf("%s\n", tk->str);\
 }
 
 #define ID() { \
   tk = new Token(TK_ID, ts, te); \
-  Parse(parser, TK_ID, tk); \
+  Parse(parser, TK_ID, tk, &stmt); \
   printf("id: ");\
   printf("%s\n", tk->str);\
 }
+
 %%{
   machine lexer;
 
@@ -83,6 +84,8 @@ Stmt *Parse(char *str) {
 
   Token *tk = NULL;
 
+  Stmt *stmt;
+
   void *parser = ParseAlloc(malloc);
 
   %% write init;
@@ -92,10 +95,10 @@ Stmt *Parse(char *str) {
     printf("error: %s\n", p);
   }
 
-  Parse(parser, 0, 0);
+  Parse(parser, 0, 0, &stmt);
 
   ParseFree(parser, free);
 
-  return NULL;
+  return stmt;
 }
 

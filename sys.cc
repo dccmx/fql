@@ -32,14 +32,14 @@ static void AddFile(Table *tb, const char *path, const char *name) {
   tb->Append(row);
 }
 
-void ListDir(Table *tb, const char *dir) {
+void ListDir(Table *tb, const string& dir) {
   DIR *dp;
   struct dirent *ent;
 
-  if (!(dp = opendir(dir))) return;
+  if (!(dp = opendir(dir.c_str()))) return;
 
   while((ent = readdir(dp)) != NULL) {
-    AddFile(tb, dir, ent->d_name);
+    AddFile(tb, dir.c_str(), ent->d_name);
   }
 
   closedir(dp);

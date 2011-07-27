@@ -28,14 +28,14 @@ class Select {
 
  public:
   Table *Execute();
-  void set_attrs(const vector<string> attrs) { attrs_ = attrs; }
-  void set_folders(const vector<string> folders) { folders_ = folders; }
+  void set_attrs(vector<string> *attrs) { attrs_ = attrs; }
+  void set_folders(vector<string> *folders) { folders_ = folders; }
   void set_distinct(bool distinct) { distinct_ = distinct; }
 
  private:
   bool distinct_;
-  vector<string> attrs_;
-  vector<string> folders_;
+  vector<string> *attrs_;
+  vector<string> *folders_;
 };
 
 #endif // AST_H_

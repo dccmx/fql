@@ -5,7 +5,8 @@
 #include "sys.h"
 
 int main(int argc, char **argv) {
-  Stmt *stmt = Parse((char *)"select time, name from folder1, folder2 where size > 100 and name=`dccmx\".pdf`");
+  //Stmt *stmt = Parse((char *)"select time, \"name\" from `.`, folder2 where size > 100 and name=`dccmx\".pdf`");
+  Stmt *stmt = Parse((char *)"select time, \"name\" from `.`, folder2 ");
   Table *res;
   if (stmt) {
     res = stmt->Execute();
