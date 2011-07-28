@@ -11,39 +11,34 @@
   tk = new Token(TK_INTEGER, ts, te); \
   tk->value = atoi(tk->str); \
   Parse(parser, TK_INTEGER, tk, &context); \
-  printf("int: %d\n", tk->value); \
 }
 
 #define KEYWORD(ID) { \
   tk = new Token(ID, ts, te); \
   Parse(parser, ID, tk, &context); \
-  printf("keyword: %s\n", tk->str);\
 }
 
 #define SYMBOL(ID) { \
   tk = new Token(ID, ts, te); \
   Parse(parser, ID, tk, &context); \
-  printf("symbol: %s\n", tk->str);\
 }
 
 #define STRING() { \
   tk = new Token(TK_STRING, ts + 1, te - 1); \
   Parse(parser, TK_STRING, tk, &context); \
-  printf("string: %s\n", tk->str);\
 }
 
 #define ID() { \
   tk = new Token(TK_ID, ts, te); \
   Parse(parser, TK_ID, tk, &context); \
-  printf("id: %s\n", tk->str);\
 }
 
 
-#line 70 "lexer.rl"
+#line 65 "lexer.rl"
 
 
 
-#line 47 "lexer-rl.cc"
+#line 42 "lexer-rl.cc"
 static const char _lexer_actions[] = {
 	0, 1, 0, 1, 1, 1, 2, 1, 
 	16, 1, 17, 1, 18, 1, 19, 1, 
@@ -233,9 +228,9 @@ static const int lexer_error = 0;
 static const int lexer_en_main = 5;
 
 
-#line 73 "lexer.rl"
+#line 68 "lexer.rl"
 
-Statement *Parse(char *str) {
+ParserContext Parse(char *str) {
   int cs, act;
   char *ts, *te;
   char *p = str;
@@ -249,7 +244,7 @@ Statement *Parse(char *str) {
   void *parser = ParseAlloc(malloc);
 
   
-#line 253 "lexer-rl.cc"
+#line 248 "lexer-rl.cc"
 	{
 	cs = lexer_start;
 	ts = 0;
@@ -257,9 +252,9 @@ Statement *Parse(char *str) {
 	act = 0;
 	}
 
-#line 88 "lexer.rl"
+#line 83 "lexer.rl"
   
-#line 263 "lexer-rl.cc"
+#line 258 "lexer-rl.cc"
 	{
 	int _klen;
 	unsigned int _trans;
@@ -280,7 +275,7 @@ _resume:
 #line 1 "NONE"
 	{ts = p;}
 	break;
-#line 284 "lexer-rl.cc"
+#line 279 "lexer-rl.cc"
 		}
 	}
 
@@ -351,99 +346,99 @@ _eof_trans:
 	{te = p+1;}
 	break;
 	case 3:
-#line 45 "lexer.rl"
+#line 40 "lexer.rl"
 	{act = 2;}
 	break;
 	case 4:
-#line 46 "lexer.rl"
+#line 41 "lexer.rl"
 	{act = 3;}
 	break;
 	case 5:
-#line 48 "lexer.rl"
+#line 43 "lexer.rl"
 	{act = 5;}
 	break;
 	case 6:
-#line 49 "lexer.rl"
+#line 44 "lexer.rl"
 	{act = 6;}
 	break;
 	case 7:
-#line 50 "lexer.rl"
+#line 45 "lexer.rl"
 	{act = 7;}
 	break;
 	case 8:
-#line 51 "lexer.rl"
+#line 46 "lexer.rl"
 	{act = 8;}
 	break;
 	case 9:
-#line 52 "lexer.rl"
+#line 47 "lexer.rl"
 	{act = 9;}
 	break;
 	case 10:
-#line 53 "lexer.rl"
+#line 48 "lexer.rl"
 	{act = 10;}
 	break;
 	case 11:
-#line 54 "lexer.rl"
+#line 49 "lexer.rl"
 	{act = 11;}
 	break;
 	case 12:
-#line 55 "lexer.rl"
+#line 50 "lexer.rl"
 	{act = 12;}
 	break;
 	case 13:
-#line 63 "lexer.rl"
+#line 58 "lexer.rl"
 	{act = 17;}
 	break;
 	case 14:
-#line 64 "lexer.rl"
+#line 59 "lexer.rl"
 	{act = 18;}
 	break;
 	case 15:
-#line 66 "lexer.rl"
+#line 61 "lexer.rl"
 	{act = 19;}
 	break;
 	case 16:
-#line 57 "lexer.rl"
+#line 52 "lexer.rl"
 	{te = p+1;{ SYMBOL(TK_COMMA) }}
 	break;
 	case 17:
-#line 58 "lexer.rl"
+#line 53 "lexer.rl"
 	{te = p+1;{ SYMBOL(TK_GT); }}
 	break;
 	case 18:
-#line 59 "lexer.rl"
+#line 54 "lexer.rl"
 	{te = p+1;{ SYMBOL(TK_EQ); }}
 	break;
 	case 19:
-#line 60 "lexer.rl"
+#line 55 "lexer.rl"
 	{te = p+1;{ SYMBOL(TK_STAR) }}
 	break;
 	case 20:
-#line 63 "lexer.rl"
+#line 58 "lexer.rl"
 	{te = p+1;{ STRING() }}
 	break;
 	case 21:
-#line 64 "lexer.rl"
+#line 59 "lexer.rl"
 	{te = p+1;{ STRING() }}
 	break;
 	case 22:
-#line 68 "lexer.rl"
+#line 63 "lexer.rl"
 	{te = p+1;}
 	break;
 	case 23:
-#line 43 "lexer.rl"
+#line 38 "lexer.rl"
 	{te = p;p--;{ INTEGER() }}
 	break;
 	case 24:
-#line 47 "lexer.rl"
+#line 42 "lexer.rl"
 	{te = p;p--;{ KEYWORD(TK_OR) }}
 	break;
 	case 25:
-#line 66 "lexer.rl"
+#line 61 "lexer.rl"
 	{te = p;p--;{ ID() }}
 	break;
 	case 26:
-#line 66 "lexer.rl"
+#line 61 "lexer.rl"
 	{{p = ((te))-1;}{ ID() }}
 	break;
 	case 27:
@@ -491,7 +486,7 @@ _eof_trans:
 	}
 	}
 	break;
-#line 495 "lexer-rl.cc"
+#line 490 "lexer-rl.cc"
 		}
 	}
 
@@ -504,7 +499,7 @@ _again:
 #line 1 "NONE"
 	{ts = 0;}
 	break;
-#line 508 "lexer-rl.cc"
+#line 503 "lexer-rl.cc"
 		}
 	}
 
@@ -524,12 +519,12 @@ _again:
 	_out: {}
 	}
 
-#line 89 "lexer.rl"
+#line 84 "lexer.rl"
 
   if (cs < 
-#line 531 "lexer-rl.cc"
+#line 526 "lexer-rl.cc"
 5
-#line 90 "lexer.rl"
+#line 85 "lexer.rl"
 ) {
     printf("error: %s\n", p);
   }
@@ -538,6 +533,6 @@ _again:
 
   ParseFree(parser, free);
 
-  return context.stmt;
+  return context;
 }
 

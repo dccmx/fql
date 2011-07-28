@@ -12,6 +12,6 @@ struct Token {
   int value;
 };
 
-Statement *Parse(char *str);
+ParserContext Parse(char *str);
 
 #endif // LEXER_H_

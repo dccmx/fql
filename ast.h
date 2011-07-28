@@ -14,7 +14,9 @@ class Statement;
 class Select;
 
 struct ParserContext {
+  ParserContext() : stmt(NULL), error(false) {}
   Statement *stmt;
+  bool error;
 };
 
 class Statement {

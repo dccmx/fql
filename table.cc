@@ -11,16 +11,17 @@ Table::~Table() {
   }
 }
 
-void Table::Print() {
-  for (vector<string>::const_iterator hi = header_.begin(); hi != header_.end(); ++hi) {
-    printf("%-15s", hi->c_str());
+void Table::Print(bool head) {
+  if (head) {
+    for (vector<string>::const_iterator hi = header_.begin(); hi != header_.end(); ++hi) {
+      printf("%-15s ", hi->c_str());
+    }
+    printf("\n");
   }
-
-  printf("\n");
 
   for (vector<Row>::const_iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
     for (vector<Variant*>::const_iterator ci = ri->begin(); ci != ri->end(); ++ci) {
-      printf("%-15s", (*ci)->c_str());
+      printf("%-15s ", (*ci)->c_str());
     }
     printf("\n");
   }

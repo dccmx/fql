@@ -904,7 +904,7 @@ static void yy_syntax_error(
 #line 7 "parser.y"
 
   printf("parse error near: %s\n", TOKEN->str);
-  exit(-1);
+  ctx->error = true;
 #line 909 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }

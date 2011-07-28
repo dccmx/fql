@@ -6,7 +6,7 @@
 %parse_accept {}
 %syntax_error {
   printf("parse error near: %s\n", TOKEN->str);
-  exit(-1);
+  ctx->error = true;
 }
 
 %stack_overflow {

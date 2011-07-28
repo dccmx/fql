@@ -22,7 +22,7 @@ class Table {
   const vector<string>& Header() { return header_; }
   void Append(Row row) { rows_.push_back(row); }
 
-  void Print();
+  void Print(bool head = false);
 
  private:
   vector<string> header_;

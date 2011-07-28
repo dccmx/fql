@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string>
+#include <time.h>
 
 using std::string;
 
@@ -21,13 +22,22 @@ class String : public Variant {
   string value_;
 };
 
-class Size : public Variant {
+class UInt32 : public Variant {
  public:
-  Size(off_t size) : value_(size) { sprintf(value_str_, "%u", value_); }
+  UInt32(off_t value) : value_(value) { sprintf(value_str_, "%u", value_); }
   const char *c_str() { return value_str_; }
  private:
   uint32_t value_;
   char value_str_[15];
+};
+
+class Time : public Variant {
+ public:
+  Time(time_t value);
+  const char *c_str() { return value_str_; }
+ private:
+  time_t value_;
+  char value_str_[25];
 };
 
 #endif // VARIANT_H_
