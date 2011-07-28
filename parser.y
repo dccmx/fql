@@ -5,33 +5,34 @@
 
 %parse_accept {}
 %syntax_error {
-    printf("parse error\n");
+  printf("parse error near: %s\n", TOKEN->str);
+  exit(-1);
 }
 
 %stack_overflow {
-    printf("Stack overflowed\n");
+  printf("Stack overflowed\n");
 }
 
-%extra_argument {Stmt **stmt}
+%extra_argument {ParserContext *ctx}
 
 %token_type {Token*}
 %token_prefix TK_
 
-%type stmt {Stmt*}
 %type select {Select*}
 %type attrlist {vector<string>*}
 %type folderlist {vector<string>*}
 %type from {vector<string>*}
 
-stmt(A) ::= select(B). {
-  A = new Stmt();
-  A->set_select(B);
-  *stmt = A;
+stmt ::= select(A). {
+  ctx->stmt = A;
 }
 
 select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby limit. {
   A = new Select();
-  if (D != NULL) A->set_distinct(true);
+  if (D != NULL) {
+    A->set_distinct(true);
+    delete D;
+  }
   A->set_attrs(C);
   A->set_folders(F);
 }
@@ -46,15 +47,18 @@ name(A) ::= ID|STRING(B). {
 attrlist(A) ::= name(B). {
   A = new vector<string>();
   A->push_back(string(B->str));
+  delete B;
 }
 
 attrlist(A) ::= STAR(B). {
   A = new vector<string>();
   A->push_back(string(B->str));
+  delete B;
 }
 
 attrlist(A) ::= attrlist(B) COMMA name(C). {
   B->push_back(string(C->str));
+  delete C;
   A = B;
 }
 
@@ -66,10 +70,12 @@ from(A) ::= FROM folderlist(B). {
 folderlist(A) ::= name(B). {
   A = new vector<string>();
   A->push_back(string(B->str));
+  delete B;
 }
 
 folderlist(A) ::= folderlist(B) COMMA name(C). {
   B->push_back(string(C->str));
+  delete C;
   A = B;
 }
 

@@ -1,9 +1,9 @@
 #include "ast.h"
 #include "sys.h"
 
-Table *Stmt::Execute() {
-  if (select_) return select_->Execute();
-  return NULL;
+Select::~Select() {
+  delete attrs_;
+  delete folders_;
 }
 
 Table *Select::Execute() {

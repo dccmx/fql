@@ -16,6 +16,7 @@ typedef vector<Variant*> Row;
 class Table {
  public:
   Table(const vector<string>& header) : header_(header) {}
+  ~Table();
 
  public:
   const vector<string>& Header() { return header_; }

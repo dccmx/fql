@@ -64,17 +64,16 @@
 typedef union {
   int yyinit;
   ParseTOKENTYPE yy0;
-  Stmt* yy7;
-  Select* yy8;
+  Select* yy7;
   vector<string>* yy13;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
 #endif
-#define ParseARG_SDECL Stmt **stmt;
-#define ParseARG_PDECL ,Stmt **stmt
-#define ParseARG_FETCH Stmt **stmt = yypParser->stmt
-#define ParseARG_STORE yypParser->stmt = stmt
+#define ParseARG_SDECL ParserContext *ctx;
+#define ParseARG_PDECL ,ParserContext *ctx
+#define ParseARG_FETCH ParserContext *ctx = yypParser->ctx
+#define ParseARG_STORE yypParser->ctx = ctx
 #define YYNSTATE 41
 #define YYNRULE 25
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
@@ -146,33 +145,33 @@ static const YYMINORTYPE yyzerominor = { 0 };
 **  yy_default[]       Default action for each state.
 */
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */    26,   26,   28,    8,    9,   67,   19,   32,   32,   32,
- /*    10 */    27,    5,    6,   14,   36,   18,   31,   31,   27,   26,
- /*    20 */    26,   22,   33,    9,    4,   23,   12,   12,   30,   33,
- /*    30 */    15,   39,   40,   10,   11,    1,   29,   37,    3,   34,
- /*    40 */    35,   38,   16,   21,   17,   20,   41,   25,    2,   24,
- /*    50 */     7,   13,
+ /*     0 */    26,   26,   28,    8,    9,    5,   19,   32,   32,   32,
+ /*    10 */    67,   27,    6,   27,   26,   26,   31,   31,   23,   36,
+ /*    20 */    18,   22,    9,    4,   33,   39,   12,   12,   14,   30,
+ /*    30 */    15,   33,   10,   11,   29,   34,   40,   35,   38,    1,
+ /*    40 */    37,    3,   16,   20,   21,   24,   17,   41,   25,    2,
+ /*    50 */    13,    7,
 };
 static const YYCODETYPE yy_lookahead[] = {
- /*     0 */     3,    4,    5,   24,    6,   22,   23,    8,    9,   10,
- /*    10 */    31,   24,    3,    1,   34,   35,   18,   19,   31,    3,
- /*    20 */     4,   12,    4,    6,    7,   25,   13,   14,   36,   11,
- /*    30 */    26,   31,    2,   32,   32,   27,   31,   34,   15,   33,
- /*    40 */    33,   31,   28,   16,   29,   20,    0,   11,   17,   30,
- /*    50 */     3,    6,
+ /*     0 */     3,    4,    5,   23,    6,   23,   22,    8,    9,   10,
+ /*    10 */    26,   31,    3,   31,    3,    4,   18,   19,   24,   34,
+ /*    20 */    35,   12,    6,    7,    4,   31,   13,   14,    1,   36,
+ /*    30 */    25,   11,   32,   32,   31,   33,    2,   33,   31,   27,
+ /*    40 */    34,   15,   28,   20,   16,   30,   29,    0,   11,   17,
+ /*    50 */     6,    3,
 };
 #define YY_SHIFT_USE_DFLT (-4)
 #define YY_SHIFT_MAX 23
 static const signed char yy_shift_ofst[] = {
- /*     0 */    12,   -3,   -3,    9,   16,   -2,   -1,   -1,   17,   16,
- /*    10 */    18,   18,    9,   16,   30,   23,   27,   25,   13,   46,
- /*    20 */    36,   31,   47,   45,
+ /*     0 */    27,   -3,   -3,    9,   11,   -2,   -1,   -1,   16,   11,
+ /*    10 */    20,   20,    9,   11,   34,   26,   28,   23,   13,   47,
+ /*    20 */    37,   32,   48,   44,
 };
-#define YY_REDUCE_USE_DFLT (-22)
+#define YY_REDUCE_USE_DFLT (-21)
 #define YY_REDUCE_MAX 17
 static const signed char yy_reduce_ofst[] = {
- /*     0 */   -17,  -21,  -13,  -20,    0,   -8,    1,    2,    4,    5,
- /*    10 */     6,    7,    3,   10,    8,   14,   15,   19,
+ /*     0 */   -16,  -20,  -18,  -15,   -6,   -7,    0,    1,    5,    3,
+ /*    10 */     2,    4,    6,    7,   12,   14,   17,   15,
 };
 static const YYACTIONTYPE yy_default[] = {
  /*     0 */    66,   66,   66,   66,   66,   66,   66,   66,   49,   66,
@@ -278,8 +277,8 @@ static const char *const yyTokenName[] = {
   "GT",            "LT",            "EQ",            "INTEGER",     
   "NOT",           "AND",           "OR",            "WHERE",       
   "ORDER",         "BY",            "ASC",           "DESC",        
-  "LIMIT",         "error",         "stmt",          "select",      
-  "attrlist",      "folderlist",    "from",          "distinct",    
+  "LIMIT",         "error",         "select",        "attrlist",    
+  "folderlist",    "from",          "stmt",          "distinct",    
   "where",         "orderby",       "limit",         "name",        
   "op",            "value",         "condition",     "conditionlist",
   "order",       
@@ -417,7 +416,7 @@ static void yy_destructor(
 {
 #line 4 "parser.y"
  delete (yypminor->yy0); 
-#line 421 "parser.c"
+#line 420 "parser.c"
 }
       break;
     default:  break;   /* If no destructor action specified: do nothing */
@@ -590,10 +589,10 @@ static void yyStackOverflow(yyParser *yypParser, YYMINORTYPE *yypMinor){
    while( yypParser->yyidx>=0 ) yy_pop_parser_stack(yypParser);
    /* Here code is inserted which will execute if the parser
    ** stack every overflows */
-#line 11 "parser.y"
+#line 12 "parser.y"
 
-    printf("Stack overflowed\n");
-#line 597 "parser.c"
+  printf("Stack overflowed\n");
+#line 596 "parser.c"
    ParseARG_STORE; /* Suppress warning about unused %extra_argument var */
 }
 
@@ -650,18 +649,18 @@ static const struct {
   YYCODETYPE lhs;         /* Symbol on the left-hand side of the rule */
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
-  { 22, 1 },
-  { 23, 7 },
+  { 26, 1 },
+  { 22, 7 },
   { 27, 1 },
   { 27, 0 },
   { 31, 1 },
-  { 24, 1 },
+  { 23, 1 },
+  { 23, 1 },
+  { 23, 3 },
+  { 25, 0 },
+  { 25, 2 },
   { 24, 1 },
   { 24, 3 },
-  { 26, 0 },
-  { 26, 2 },
-  { 25, 1 },
-  { 25, 3 },
   { 32, 1 },
   { 33, 1 },
   { 34, 3 },
@@ -732,25 +731,26 @@ static void yy_reduce(
       case 0: /* stmt ::= select */
 #line 26 "parser.y"
 {
-  yygotominor.yy7 = new Stmt();
-  yygotominor.yy7->set_select(yymsp[0].minor.yy8);
-  *stmt = yygotominor.yy7;
+  ctx->stmt = yymsp[0].minor.yy7;
 }
-#line 740 "parser.c"
+#line 737 "parser.c"
         break;
       case 1: /* select ::= SELECT distinct attrlist from where orderby limit */
-#line 32 "parser.y"
+#line 30 "parser.y"
 {
-  yygotominor.yy8 = new Select();
-  if (yymsp[-5].minor.yy0 != NULL) yygotominor.yy8->set_distinct(true);
-  yygotominor.yy8->set_attrs(yymsp[-4].minor.yy13);
-  yygotominor.yy8->set_folders(yymsp[-3].minor.yy13);
+  yygotominor.yy7 = new Select();
+  if (yymsp[-5].minor.yy0 != NULL) {
+    yygotominor.yy7->set_distinct(true);
+    delete yymsp[-5].minor.yy0;
+  }
+  yygotominor.yy7->set_attrs(yymsp[-4].minor.yy13);
+  yygotominor.yy7->set_folders(yymsp[-3].minor.yy13);
   yy_destructor(yypParser,1,&yymsp[-6].minor);
 }
 #line 751 "parser.c"
         break;
       case 2: /* distinct ::= DISTINCT */
-#line 39 "parser.y"
+#line 40 "parser.y"
 {
   yy_destructor(yypParser,2,&yymsp[0].minor);
 }
@@ -759,7 +759,7 @@ static void yy_reduce(
       case 4: /* name ::= ID|STRING */
       case 12: /* op ::= GT|LT|EQ */ yytestcase(yyruleno==12);
       case 13: /* value ::= INTEGER|STRING */ yytestcase(yyruleno==13);
-#line 42 "parser.y"
+#line 43 "parser.y"
 {
   yygotominor.yy0 = yymsp[0].minor.yy0;
 }
@@ -768,68 +768,70 @@ static void yy_reduce(
       case 5: /* attrlist ::= name */
       case 6: /* attrlist ::= STAR */ yytestcase(yyruleno==6);
       case 10: /* folderlist ::= name */ yytestcase(yyruleno==10);
-#line 46 "parser.y"
+#line 47 "parser.y"
 {
   yygotominor.yy13 = new vector<string>();
   yygotominor.yy13->push_back(string(yymsp[0].minor.yy0->str));
+  delete yymsp[0].minor.yy0;
 }
-#line 777 "parser.c"
+#line 778 "parser.c"
         break;
       case 7: /* attrlist ::= attrlist COMMA name */
       case 11: /* folderlist ::= folderlist COMMA name */ yytestcase(yyruleno==11);
-#line 56 "parser.y"
+#line 59 "parser.y"
 {
   yymsp[-2].minor.yy13->push_back(string(yymsp[0].minor.yy0->str));
+  delete yymsp[0].minor.yy0;
   yygotominor.yy13 = yymsp[-2].minor.yy13;
   yy_destructor(yypParser,6,&yymsp[-1].minor);
 }
-#line 787 "parser.c"
+#line 789 "parser.c"
         break;
       case 9: /* from ::= FROM folderlist */
-#line 62 "parser.y"
+#line 66 "parser.y"
 {
   yygotominor.yy13 = yymsp[0].minor.yy13;
   yy_destructor(yypParser,7,&yymsp[-1].minor);
 }
-#line 795 "parser.c"
+#line 797 "parser.c"
         break;
       case 14: /* condition ::= ID op value */
-#line 84 "parser.y"
+#line 90 "parser.y"
 {
   yy_destructor(yypParser,3,&yymsp[-2].minor);
 }
-#line 802 "parser.c"
+#line 804 "parser.c"
         break;
       case 15: /* condition ::= NOT ID op value */
-#line 85 "parser.y"
+#line 91 "parser.y"
 {
   yy_destructor(yypParser,12,&yymsp[-3].minor);
   yy_destructor(yypParser,3,&yymsp[-2].minor);
 }
-#line 810 "parser.c"
+#line 812 "parser.c"
         break;
       case 19: /* where ::= WHERE conditionlist */
-#line 91 "parser.y"
+#line 97 "parser.y"
 {
   yy_destructor(yypParser,15,&yymsp[-1].minor);
 }
-#line 817 "parser.c"
+#line 819 "parser.c"
         break;
       case 21: /* orderby ::= ORDER BY attrlist order */
-#line 94 "parser.y"
+#line 100 "parser.y"
 {
   yy_destructor(yypParser,16,&yymsp[-3].minor);
   yy_destructor(yypParser,17,&yymsp[-2].minor);
 }
-#line 825 "parser.c"
+#line 827 "parser.c"
         break;
       case 24: /* limit ::= LIMIT INTEGER */
-#line 99 "parser.y"
+#line 105 "parser.y"
 {
   yy_destructor(yypParser,20,&yymsp[-1].minor);
   yy_destructor(yypParser,11,&yymsp[0].minor);
 }
-#line 833 "parser.c"
+#line 835 "parser.c"
         break;
       default:
       /* (3) distinct ::= */ yytestcase(yyruleno==3);
@@ -901,8 +903,9 @@ static void yy_syntax_error(
 #define TOKEN (yyminor.yy0)
 #line 7 "parser.y"
 
-    printf("parse error\n");
-#line 906 "parser.c"
+  printf("parse error near: %s\n", TOKEN->str);
+  exit(-1);
+#line 909 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -922,7 +925,7 @@ static void yy_accept(
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
 #line 6 "parser.y"
-#line 926 "parser.c"
+#line 929 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

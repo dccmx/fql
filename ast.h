@@ -10,24 +10,30 @@
 using std::vector;
 using std::string;
 
-class Stmt;
+class Statement;
 class Select;
 
-class Stmt {
- public:
-  Table *Execute();
-  void set_select(Select *select) { select_ = select; }
-
- private:
-  Select *select_;
+struct ParserContext {
+  Statement *stmt;
 };
 
-class Select {
+class Statement {
  public:
-  Select() : distinct_(false) {}
+  virtual ~Statement() {}
+
+ public:
+  virtual Table *Execute() = 0;
+};
+
+class Select : public Statement {
+ public:
+  Select() : distinct_(false), attrs_(NULL), folders_(NULL) {}
+  ~Select();
 
  public:
   Table *Execute();
+
+ public:
   void set_attrs(vector<string> *attrs) { attrs_ = attrs; }
   void set_folders(vector<string> *folders) { folders_ = folders; }
   void set_distinct(bool distinct) { distinct_ = distinct; }

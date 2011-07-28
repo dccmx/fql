@@ -8,36 +8,32 @@
 #define INTEGER() { \
   tk = new Token(TK_INTEGER, ts, te); \
   tk->value = atoi(tk->str); \
-  Parse(parser, TK_INTEGER, tk, &stmt); \
+  Parse(parser, TK_INTEGER, tk, &context); \
   printf("int: %d\n", tk->value); \
 }
 
 #define KEYWORD(ID) { \
   tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk, &stmt); \
-  printf("keyword: ");\
-  printf("%s\n", tk->str);\
+  Parse(parser, ID, tk, &context); \
+  printf("keyword: %s\n", tk->str);\
 }
 
 #define SYMBOL(ID) { \
   tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk, &stmt); \
-  printf("symbol: ");\
-  printf("%s\n", tk->str);\
+  Parse(parser, ID, tk, &context); \
+  printf("symbol: %s\n", tk->str);\
 }
 
 #define STRING() { \
   tk = new Token(TK_STRING, ts + 1, te - 1); \
-  Parse(parser, TK_STRING, tk, &stmt); \
-  printf("string: ");\
-  printf("%s\n", tk->str);\
+  Parse(parser, TK_STRING, tk, &context); \
+  printf("string: %s\n", tk->str);\
 }
 
 #define ID() { \
   tk = new Token(TK_ID, ts, te); \
-  Parse(parser, TK_ID, tk, &stmt); \
-  printf("id: ");\
-  printf("%s\n", tk->str);\
+  Parse(parser, TK_ID, tk, &context); \
+  printf("id: %s\n", tk->str);\
 }
 
 %%{
@@ -67,7 +63,7 @@
     '"' (dliteralChar | '`')* '"' { STRING() };
     '`' (dliteralChar | '"')* '`' { STRING() };
 
-    (print - space - punct)+ { ID() };
+    (print - space - [,>=*])+ { ID() };
 
     ' ';
   *|;
@@ -75,7 +71,7 @@
 
 %% write data;
 
-Stmt *Parse(char *str) {
+Statement *Parse(char *str) {
   int cs, act;
   char *ts, *te;
   char *p = str;
@@ -84,7 +80,7 @@ Stmt *Parse(char *str) {
 
   Token *tk = NULL;
 
-  Stmt *stmt;
+  ParserContext context;
 
   void *parser = ParseAlloc(malloc);
 
@@ -95,10 +91,10 @@ Stmt *Parse(char *str) {
     printf("error: %s\n", p);
   }
 
-  Parse(parser, 0, 0, &stmt);
+  Parse(parser, 0, 0, &context);
 
   ParseFree(parser, free);
 
-  return stmt;
+  return context.stmt;
 }
 
