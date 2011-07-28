@@ -1,4 +1,4 @@
 fql is a tool that use SQL like query to manipulate files.
 
 example:
-`fql "select time, size, name from ../"
+`fql "select time, size, name from ../"`
