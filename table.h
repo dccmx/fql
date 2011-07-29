@@ -11,7 +11,30 @@
 using std::vector;
 using std::string;
 
-typedef vector<Variant*> Row;
+class Table;
+struct OrderList;
+
+class Row {
+  friend class Table;
+ public:
+  Variant *operator[](int index) { return row_[index]; }
+  void push_back(Variant *v) { row_.push_back(v); }
+  vector<Variant*>::iterator begin() { return row_.begin(); }
+  vector<Variant*>::iterator end() { return row_.end(); }
+
+  void set_header(vector<string> *header) { header_ = header; }
+
+  Variant *get(const string& name) const {
+    for (size_t i = 0; i < header_->size(); i ++) {
+      if (header_->at(i) == name) return row_[i];
+    }
+    return NULL;
+  }
+
+ private:
+  vector<Variant*> row_;
+  vector<string> *header_;
+};
 
 class Table {
  public:
@@ -20,8 +43,9 @@ class Table {
 
  public:
   const vector<string>& Header() { return header_; }
-  void Append(Row row) { rows_.push_back(row); }
+  void Append(Row row) { row.header_ = &header_; rows_.push_back(row); }
 
+  void Sort(OrderList *orders);
   void Print(bool head = false);
 
  private:

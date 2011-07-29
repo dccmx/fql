@@ -26,6 +26,10 @@ static void AddFile(Table *tb, const char *path, const char *name) {
   for (vector<string>::const_iterator ite = tb->Header().begin(); ite != tb->Header().end(); ++ite) {
     if (*ite == "name") {
       row.push_back(new String(name));
+    } else if (*ite == "path") {
+      row.push_back(new String(path));
+    } else if (*ite == "perms") {
+      row.push_back(new Permission(st.st_mode));
     } else if (*ite == "size") {
       row.push_back(new UInt32(st.st_size));
     } else if (*ite == "inode") {

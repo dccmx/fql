@@ -7,7 +7,6 @@
 
 #define INTEGER() { \
   tk = new Token(TK_INTEGER, ts, te); \
-  tk->value = atoi(tk->str); \
   Parse(parser, TK_INTEGER, tk, &context); \
 }
 
@@ -38,6 +37,7 @@
     [1-9][0-9]* { INTEGER() };
 
     /select/i { KEYWORD(TK_SELECT) };
+    /quit/i { KEYWORD(TK_QUIT) };
     /where/i { KEYWORD(TK_WHERE) };
     /or/i { KEYWORD(TK_OR) };
     /and/i { KEYWORD(TK_AND) };
@@ -60,7 +60,7 @@
 
     (print - space - [,>=*])+ { ID() };
 
-    ' ';
+    space;
   *|;
 }%%
 

@@ -5,7 +5,8 @@
 
 %parse_accept {}
 %syntax_error {
-  printf("parse error near: %s\n", TOKEN->str);
+  if (TOKEN) printf("syntax error near: %s\n", TOKEN->str);
+  else printf("syntax error\n");
   ctx->error = true;
 }
 
@@ -22,12 +23,18 @@
 %type attrlist {vector<string>*}
 %type folderlist {vector<string>*}
 %type from {vector<string>*}
+%type orderlist {OrderList*}
+%type orderby {OrderList*}
 
 stmt ::= select(A). {
   ctx->stmt = A;
 }
 
-select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby limit. {
+stmt ::= QUIT. {
+  exit(0);
+}
+
+select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby(O) limit. {
   A = new Select();
   if (D != NULL) {
     A->set_distinct(true);
@@ -35,6 +42,7 @@ select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby limit. {
   }
   A->set_attrs(C);
   A->set_folders(F);
+  A->set_orders(O);
 }
 
 distinct ::= DISTINCT.
@@ -73,11 +81,13 @@ folderlist(A) ::= name(B). {
   delete B;
 }
 
+/*
 folderlist(A) ::= folderlist(B) COMMA name(C). {
   B->push_back(string(C->str));
   delete C;
   A = B;
 }
+*/
 
 op(A) ::= GT|LT|EQ(B). {
   A = B;
@@ -96,10 +106,28 @@ conditionlist ::= conditionlist AND|OR condition.
 where ::= .
 where ::= WHERE conditionlist.
 
-orderby ::= .
-orderby ::= ORDER BY attrlist order.
+orderlist(A) ::= name(B) order(C). {
+  A = new OrderList();
+  A->attrs.push_back(string(B->str));
+  if (C) A->dirs.push_back(C->value);
+  else A->dirs.push_back(TK_ASC);
+}
+orderlist(A) ::= orderlist(B) COMMA name(C) order(D). {
+  B->attrs.push_back(string(C->str));
+  if (D) B->dirs.push_back(D->value);
+  else B->dirs.push_back(TK_ASC);
+  A = B;
+}
 
-order ::= ASC|DESC.
+order ::= .
+order(A) ::= ASC|DESC(B). {
+  A = B;
+}
+
+orderby ::= .
+orderby(A) ::= ORDER BY orderlist(B). {
+  A = B;
+}
 
 limit ::= .
 limit ::= LIMIT INTEGER.
