@@ -12,11 +12,17 @@ using std::vector;
 using std::string;
 
 class Table;
+class Select;
 struct OrderList;
 
 class Row {
   friend class Table;
  public:
+  Row() {};
+  Row(const Row& other);
+  ~Row();
+  const Row& operator=(const Row& other);
+
   Variant *operator[](int index) { return row_[index]; }
   void push_back(Variant *v) { row_.push_back(v); }
   vector<Variant*>::iterator begin() { return row_.begin(); }
@@ -37,9 +43,9 @@ class Row {
 };
 
 class Table {
+  friend class Select;
  public:
   Table(const vector<string>& header) : header_(header) {}
-  ~Table();
 
  public:
   const vector<string>& Header() { return header_; }

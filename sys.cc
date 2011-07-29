@@ -63,6 +63,8 @@ void ListDir(Table *tb, const string& dir) {
   if (!(dp = opendir(dir.c_str()))) return;
 
   while((ent = readdir(dp)) != NULL) {
+    if (strcmp(ent->d_name, ".") ==0) continue;
+    if (strcmp(ent->d_name, "..") ==0) continue;
     AddFile(tb, dir.c_str(), ent->d_name);
   }
 

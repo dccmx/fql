@@ -34,7 +34,7 @@
   machine lexer;
 
   main := |*
-    [1-9][0-9]* { INTEGER() };
+    ('-'|'+')? [1-9][0-9]* { INTEGER() };
 
     /select/i { KEYWORD(TK_SELECT) };
     /quit/i { KEYWORD(TK_QUIT) };

@@ -8,12 +8,26 @@
 
 using std::sort;
 
-Table::~Table() {
-  for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
-    for (vector<Variant*>::iterator ci = ri->begin(); ci != ri->end(); ++ci) {
-      delete (*ci);
-    }
+Row::Row(const Row& other) {
+  header_ = other.header_;
+  for (vector<Variant*>::const_iterator ci = other.row_.begin(); ci != other.row_.end(); ++ci) {
+    row_.push_back((*ci)->Clone());
   }
+}
+
+Row::~Row() {
+  for (vector<Variant*>::iterator ci = row_.begin(); ci != row_.end(); ++ci) {
+    delete (*ci);
+  }
+}
+
+const Row& Row::operator=(const Row& other) {
+  header_ = other.header_;
+  row_.clear();
+  for (vector<Variant*>::const_iterator ci = other.row_.begin(); ci != other.row_.end(); ++ci) {
+    row_.push_back((*ci)->Clone());
+  }
+  return *this;
 }
 
 void Table::Print(bool head) {

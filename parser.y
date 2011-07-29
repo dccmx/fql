@@ -20,11 +20,13 @@
 %token_prefix TK_
 
 %type select {Select*}
+%type cols {vector<string>*}
 %type attrlist {vector<string>*}
 %type folderlist {vector<string>*}
 %type from {vector<string>*}
 %type orderlist {OrderList*}
 %type orderby {OrderList*}
+%type limit {Limit*}
 
 stmt ::= select(A). {
   ctx->stmt = A;
@@ -34,7 +36,7 @@ stmt ::= QUIT. {
   exit(0);
 }
 
-select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby(O) limit. {
+select(A) ::= SELECT distinct(D) cols(C) from(F) where orderby(O) limit(L). {
   A = new Select();
   if (D != NULL) {
     A->set_distinct(true);
@@ -43,6 +45,7 @@ select(A) ::= SELECT distinct(D) attrlist(C) from(F) where orderby(O) limit. {
   A->set_attrs(C);
   A->set_folders(F);
   A->set_orders(O);
+  A->set_limit(L);
 }
 
 distinct ::= DISTINCT.
@@ -52,13 +55,22 @@ name(A) ::= ID|STRING(B). {
   A = B;
 }
 
-attrlist(A) ::= name(B). {
+cols(A) ::= STAR(B). {
   A = new vector<string>();
-  A->push_back(string(B->str));
+  A->push_back(string("perms"));
+  A->push_back(string("uname"));
+  A->push_back(string("gname"));
+  A->push_back(string("size"));
+  A->push_back(string("time"));
+  A->push_back(string("name"));
   delete B;
 }
 
-attrlist(A) ::= STAR(B). {
+cols(A) ::= attrlist(B). {
+  A = B;
+}
+
+attrlist(A) ::= name(B). {
   A = new vector<string>();
   A->push_back(string(B->str));
   delete B;
@@ -129,5 +141,18 @@ orderby(A) ::= ORDER BY orderlist(B). {
   A = B;
 }
 
-limit ::= .
-limit ::= LIMIT INTEGER.
+limit(A) ::= . {
+  A = new Limit();
+}
+limit(A) ::= LIMIT INTEGER(B). {
+  A = new Limit();
+  A->limit = B->value;
+  delete B;
+}
+limit(A) ::= LIMIT INTEGER(P) COMMA INTEGER(L). {
+  A = new Limit();
+  A->start = P->value;
+  A->limit = L->value;
+  delete P;
+  delete L;
+}

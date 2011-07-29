@@ -13,6 +13,7 @@ class Variant {
  public:
   virtual ~Variant() = 0;
   virtual const char *c_str() = 0;
+  virtual Variant *Clone() = 0;
   virtual int Compare(Variant *other) = 0;
 };
 
@@ -20,6 +21,7 @@ class String : public Variant {
  public:
   String(const char *str) : value_(str) {}
   const char *c_str() { return value_.c_str(); }
+  Variant *Clone() { return new String(value_.c_str()); };
 
   int Compare(Variant *other) {
     String *o = dynamic_cast<String*>(other);
@@ -37,6 +39,7 @@ class UInt32 : public Variant {
  public:
   UInt32(off_t value) : value_(value) { sprintf(value_str_, "%u", value_); }
   const char *c_str() { return value_str_; }
+  Variant *Clone() { return new UInt32(value_); };
 
   int Compare(Variant *other) {
     UInt32 *o = dynamic_cast<UInt32*>(other);
@@ -55,6 +58,7 @@ class Time : public Variant {
  public:
   Time(time_t value);
   const char *c_str() { return value_str_; }
+  Variant *Clone() { return new Time(value_); };
 
   int Compare(Variant *other) {
     Time *o = dynamic_cast<Time*>(other);
@@ -74,6 +78,7 @@ class Permission : public Variant {
  public:
   Permission(uint32_t value);
   const char *c_str() { return value_str_; }
+  Variant *Clone() { return new Permission(value_); };
 
   int Compare(Variant *other) {
     Permission *o = dynamic_cast<Permission*>(other);
