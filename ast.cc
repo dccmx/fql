@@ -33,3 +33,7 @@ Table *Select::Execute() {
   return NULL;
 }
 
+Variant *Expr::Evaluate() {
+  return NULL;
+}
+

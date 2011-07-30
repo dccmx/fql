@@ -11,6 +11,9 @@ Token::Token(int tid, char *s, char *e) {
     case TK_INTEGER:
       value = atoi(str);
       break;
+    case TK_FLOAT:
+      value = atoi(str);
+      break;
     case TK_ASC:
     case TK_DESC:
       value = tid;
@@ -18,4 +21,8 @@ Token::Token(int tid, char *s, char *e) {
     default:
       break;
   }
+}
+
+Variant *Token::ToVariant() {
+  return NULL;
 }

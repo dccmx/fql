@@ -9,6 +9,10 @@
   tk = new Token(TK_INTEGER, ts, te); \
   Parse(parser, TK_INTEGER, tk, &context); \
 }
+#define FLOAT() {\
+  tk = new Token(TK_FLOAT, ts, te); \
+  Parse(parser, TK_FLOAT, tk, &context); \
+}
 
 #define KEYWORD(ID) { \
   tk = new Token(ID, ts, te); \
@@ -35,6 +39,7 @@
 
   main := |*
     ('-'|'+')? [1-9][0-9]* { INTEGER() };
+    ('-'|'+')? [1-9][0-9]* '.' [0-9]+{ FLOAT() };
 
     /select/i { KEYWORD(TK_SELECT) };
     /quit/i { KEYWORD(TK_QUIT) };

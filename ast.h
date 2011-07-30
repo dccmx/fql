@@ -12,6 +12,7 @@ using std::string;
 
 class Statement;
 class Select;
+class Expr;
 struct OrderList;
 struct Limit;
 
@@ -62,8 +63,24 @@ class Select : public Statement {
   bool distinct_;
   vector<string> *attrs_;
   vector<string> *folders_;
+  Expr *where_;
   OrderList *orders_;
   Limit *limit_;
+};
+
+class Expr {
+ public:
+  Expr() : op_(0), left_(NULL), right_(NULL), value_(NULL) {}
+  ~Expr() { delete left_; delete right_; delete value_; }
+
+  Variant *Evaluate();
+  void set_value(Variant *value) { value_ = value; }
+
+ private:
+  int op_;
+  Expr *left_;
+  Expr *right_;
+  Variant *value_;
 };
 
 #endif // AST_H_

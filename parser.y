@@ -24,6 +24,7 @@
 %type attrlist {vector<string>*}
 %type folderlist {vector<string>*}
 %type from {vector<string>*}
+%type expr {Expr*}
 %type orderlist {OrderList*}
 %type orderby {OrderList*}
 %type limit {Limit*}
@@ -51,7 +52,7 @@ select(A) ::= SELECT distinct(D) cols(C) from(F) where orderby(O) limit(L). {
 distinct ::= DISTINCT.
 distinct ::= .
 
-name(A) ::= ID|STRING(B). {
+name(A) ::= ID|STRING|FLOAT(B). {
   A = B;
 }
 
@@ -100,23 +101,24 @@ folderlist(A) ::= folderlist(B) COMMA name(C). {
   A = B;
 }
 */
+%left OR.
+%left AND.
+%left LIKE.
+%left GT LT EQ GE LE NE.
 
-op(A) ::= GT|LT|EQ(B). {
-  A = B;
+expr(A) ::= name(B). {
+  A = new Expr();
+  A->set_value(B->ToVariant());
 }
-
-value(A) ::= INTEGER|STRING(B). {
-  A = B;
-}
-
-condition ::= ID op value.
-condition ::= NOT ID op value.
-
-conditionlist ::= condition.
-conditionlist ::= conditionlist AND|OR condition.
+expr ::= NOT name.
+expr ::= LP expr RP.
+expr ::= expr AND expr.
+expr ::= expr OR expr.
+expr ::= expr LIKE expr.
+expr ::= expr GT|LT|EQ|GE|LE|NE expr.
 
 where ::= .
-where ::= WHERE conditionlist.
+where ::= WHERE expr.
 
 orderlist(A) ::= name(B) order(C). {
   A = new OrderList();
