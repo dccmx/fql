@@ -12,6 +12,7 @@ struct Token {
   char str[1024];
 
   int value;
+  double fvalue;
 };
 
 ParserContext Parse(char *str);

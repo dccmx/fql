@@ -31,13 +31,13 @@ static void AddFile(Table *tb, const char *path, const char *name) {
     } else if (*ite == "perms") {
       row.push_back(new Permission(st.st_mode));
     } else if (*ite == "size") {
-      row.push_back(new UInt32(st.st_size));
+      row.push_back(new Int32(st.st_size));
     } else if (*ite == "inode") {
-      row.push_back(new UInt32(st.st_ino));
+      row.push_back(new Int32(st.st_ino));
     } else if (*ite == "uid") {
-      row.push_back(new UInt32(st.st_uid));
+      row.push_back(new Int32(st.st_uid));
     } else if (*ite == "gid") {
-      row.push_back(new UInt32(st.st_gid));
+      row.push_back(new Int32(st.st_gid));
     } else if (*ite == "uname") {
       struct passwd *passwd = getpwuid(st.st_uid);
       row.push_back(new String(passwd->pw_name));

@@ -53,6 +53,7 @@ class Select : public Statement {
   void set_attrs(vector<string> *attrs) { attrs_ = attrs; }
   void set_folders(vector<string> *folders) { folders_ = folders; }
   void set_distinct(bool distinct) { distinct_ = distinct; }
+  void set_where(Expr *where) { where_ = where; }
   void set_orders(OrderList *orders) { orders_ = orders; }
   void set_limit(Limit *limit) { limit_ = limit; }
 
@@ -70,17 +71,21 @@ class Select : public Statement {
 
 class Expr {
  public:
-  Expr() : op_(0), left_(NULL), right_(NULL), value_(NULL) {}
+  Expr(int op = 0, Expr *left = NULL, Expr *right = NULL, Variant *value = NULL, bool is_attr = false)
+      : op_(op), left_(left), right_(right), value_(value), is_attr_(is_attr) {}
   ~Expr() { delete left_; delete right_; delete value_; }
 
-  Variant *Evaluate();
+  Variant *Evaluate(Row *row);
+  void Print();
   void set_value(Variant *value) { value_ = value; }
+  void set_is_attr(bool is_attr = true) { is_attr_ = is_attr; }
 
  private:
   int op_;
   Expr *left_;
   Expr *right_;
   Variant *value_;
+  bool is_attr_;
 };
 
 #endif // AST_H_

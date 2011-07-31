@@ -25,6 +25,7 @@
 %type folderlist {vector<string>*}
 %type from {vector<string>*}
 %type expr {Expr*}
+%type where {Expr*}
 %type orderlist {OrderList*}
 %type orderby {OrderList*}
 %type limit {Limit*}
@@ -37,7 +38,7 @@ stmt ::= QUIT. {
   exit(0);
 }
 
-select(A) ::= SELECT distinct(D) cols(C) from(F) where orderby(O) limit(L). {
+select(A) ::= SELECT distinct(D) cols(C) from(F) where(W) orderby(O) limit(L). {
   A = new Select();
   if (D != NULL) {
     A->set_distinct(true);
@@ -45,6 +46,7 @@ select(A) ::= SELECT distinct(D) cols(C) from(F) where orderby(O) limit(L). {
   }
   A->set_attrs(C);
   A->set_folders(F);
+  A->set_where(W);
   A->set_orders(O);
   A->set_limit(L);
 }
@@ -52,7 +54,7 @@ select(A) ::= SELECT distinct(D) cols(C) from(F) where orderby(O) limit(L). {
 distinct ::= DISTINCT.
 distinct ::= .
 
-name(A) ::= ID|STRING|FLOAT(B). {
+name(A) ::= ID|STRING|FLOAT|INTEGER(B). {
   A = B;
 }
 
@@ -101,6 +103,8 @@ folderlist(A) ::= folderlist(B) COMMA name(C). {
   A = B;
 }
 */
+%left PLUS MINUS.
+%left DIV MOD STAR.
 %left OR.
 %left AND.
 %left LIKE.
@@ -110,15 +114,35 @@ expr(A) ::= name(B). {
   A = new Expr();
   A->set_value(B->ToVariant());
 }
-expr ::= NOT name.
-expr ::= LP expr RP.
-expr ::= expr AND expr.
-expr ::= expr OR expr.
-expr ::= expr LIKE expr.
-expr ::= expr GT|LT|EQ|GE|LE|NE expr.
+expr(A) ::= NOT name(B). {
+  A = new Expr(TK_NOT, NULL, NULL, B->ToVariant(), true);
+}
+expr(A) ::= LP expr(B) RP. {
+  A = B;
+}
+expr(A) ::= expr(B) AND expr(C). {
+  A = new Expr(TK_AND, B, C);
+}
+expr(A) ::= expr(B) OR expr(C). {
+  A = new Expr(TK_OR, B, C);
+}
+expr(A) ::= expr(B) LIKE expr(C). {
+  A = new Expr(TK_LIKE, B, C);
+}
+expr(A) ::= expr(B) PLUS|MINUS(OP) expr(C). {
+  A = new Expr(@OP, B, C);
+}
+expr(A) ::= expr(B) DIV|MOD|STAR(OP) expr(C). {
+  A = new Expr(@OP, B, C);
+}
+expr(A) ::= expr(B) GT|LT|EQ|GE|LE|NE(OP) expr(C). {
+  A = new Expr(@OP, B, C);
+}
 
 where ::= .
-where ::= WHERE expr.
+where(A) ::= WHERE expr(B). {
+  A = B;
+}
 
 orderlist(A) ::= name(B) order(C). {
   A = new OrderList();

@@ -54,10 +54,20 @@
     /desc/i { KEYWORD(TK_DESC) };
     /limit/i { KEYWORD(TK_LIMIT) };
 
-    ',' { SYMBOL(TK_COMMA) };
+    '+' { SYMBOL(TK_PLUS) };
+    '-' { SYMBOL(TK_MINUS) };
+    '/' { SYMBOL(TK_DIV) };
+    '%' { SYMBOL(TK_MOD) };
+    '(' { SYMBOL(TK_LP) };
+    ')' { SYMBOL(TK_RP) };
     '>' { SYMBOL(TK_GT); };
+    '<' { SYMBOL(TK_LT); };
     '=' { SYMBOL(TK_EQ); };
+    '>=' { SYMBOL(TK_GE); };
+    '<=' { SYMBOL(TK_LE); };
+    '!=' { SYMBOL(TK_NE); };
     '*' { SYMBOL(TK_STAR) };
+    ',' { SYMBOL(TK_COMMA) };
 
     dliteralChar = [^`"\\] | ( '\\' any );
     '"' (dliteralChar | '`')* '"' { STRING() };
