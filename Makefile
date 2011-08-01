@@ -25,6 +25,7 @@ all: fql
 
 lexer-rl.cc: lexer.rl parser.y
 	lemon parser.y
+	mv parser.c parser.cc
 	ragel -o lexer-rl.cc -C lexer.rl
 
 debug: fql.cc $(OBJFILES) $(INCFILES)

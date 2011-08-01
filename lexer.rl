@@ -3,7 +3,7 @@
 
 #include "lexer.h"
 #include "parser.h"
-#include "parser.c"
+#include "parser.cc"
 
 #define INTEGER() { \
   tk = new Token(TK_INTEGER, ts, te); \
