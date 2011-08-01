@@ -1,4 +1,28 @@
-fql is a tool that use SQL like query to manipulate files.
+fql:
+  fql is a tool that use SQL like query to manipulate files.
 
 example:
-`fql "select time, size, name from ../"`
+  fql "select time, size, name from ../"
+  fql "select * where name = fql.cc"
+  fql "select time, size, name from . where size > 1000 and size < 2000 order by size desc"
+
+available columns to select:
+  name
+  path
+  perms
+  size
+  inode
+  uid
+  gid
+  uname
+  gname
+  atime
+  time : same as atime
+  mtime
+  ctime
+
+Make:
+  just type make.
+
+Install:
+  copy ./fql to where you like such as /usr/local/bin/.

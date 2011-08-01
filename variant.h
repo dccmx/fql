@@ -53,13 +53,13 @@ class String : public Variant {
     return value_ != "";
   }
 
- private:
+ protected:
   string value_;
 };
 
 class Int32 : public Variant {
  public:
-  Int32(off_t value) : value_(value) { sprintf(value_str_, "%u", value_); }
+  Int32(off_t value = 0) : value_(value) { sprintf(value_str_, "%d", value_); }
   const char *c_str() { return value_str_; }
   bool c_bool() { return value_; }
   Variant *Clone() { return new Int32(value_); };
@@ -114,9 +114,15 @@ class Int32 : public Variant {
     }
   }
 
- private:
+ protected:
   int32_t value_;
   char value_str_[15];
+};
+
+class FileSize : public Int32 {
+ public:
+  FileSize(off_t value);
+  Variant *Clone() { return new FileSize(value_); };
 };
 
 class Float : public Variant {
@@ -168,7 +174,7 @@ class Float : public Variant {
     }
   }
 
- private:
+ protected:
   double value_;
   char value_str_[15];
 };
@@ -191,7 +197,7 @@ class Time : public Variant {
     return 0;
   }
 
- private:
+ protected:
   time_t value_;
   char value_str_[25];
 };
@@ -212,7 +218,7 @@ class Permission : public Variant {
     }
   }
 
- private:
+ protected:
   uint32_t value_;
   char value_str_[10];
 };
@@ -233,7 +239,7 @@ class Bool : public Variant {
     }
   }
 
- private:
+ protected:
   bool value_;
   char value_str_[6];
 };

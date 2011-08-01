@@ -33,3 +33,20 @@ Permission::Permission(uint32_t value) {
     }
   }
 }
+
+FileSize::FileSize(off_t value) {
+  static const char m[] = "\0KMGTP";
+
+  value_ = value;
+
+  double v = value_;
+  int i = 0;
+  while (v >= 1024 && i < 5) {
+    v /= 1024.0;
+    i++;
+  }
+
+  if (i != 0 ) sprintf(value_str_, "%.1lf%c", v, m[i]);
+  else sprintf(value_str_, "%d", value_);
+}
+
