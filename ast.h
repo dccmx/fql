@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "table.h"
+#include "expr.h"
 
 using std::vector;
 using std::string;
@@ -67,25 +68,6 @@ class Select : public Statement {
   Expr *where_;
   OrderList *orders_;
   Limit *limit_;
-};
-
-class Expr {
- public:
-  Expr(int op = 0, Expr *left = NULL, Expr *right = NULL, Variant *value = NULL, bool is_attr = false)
-      : op_(op), left_(left), right_(right), value_(value), is_attr_(is_attr) {}
-  ~Expr() { delete left_; delete right_; delete value_; }
-
-  Variant *Evaluate(Row *row);
-  void Print();
-  void set_value(Variant *value) { value_ = value; }
-  void set_is_attr(bool is_attr = true) { is_attr_ = is_attr; }
-
- private:
-  int op_;
-  Expr *left_;
-  Expr *right_;
-  Variant *value_;
-  bool is_attr_;
 };
 
 #endif // AST_H_

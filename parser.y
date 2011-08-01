@@ -105,38 +105,46 @@ folderlist(A) ::= folderlist(B) COMMA name(C). {
 */
 %left PLUS MINUS.
 %left DIV MOD STAR.
+%right NOT.
 %left OR.
 %left AND.
 %left LIKE.
 %left GT LT EQ GE LE NE.
 
 expr(A) ::= name(B). {
-  A = new Expr();
-  A->set_value(B->ToVariant());
+  A = new Value(B->ToVariant(), @B);
 }
-expr(A) ::= NOT name(B). {
-  A = new Expr(TK_NOT, NULL, NULL, B->ToVariant(), true);
+expr(A) ::= NOT expr(B). {
+  A = new UnaryExpr(TK_NOT, B);
+  Value *v = dynamic_cast<Value*>(B);
+  if (v && v->id() == TK_ID) {
+    v->set_is_attr(true);
+  }
 }
 expr(A) ::= LP expr(B) RP. {
   A = B;
 }
 expr(A) ::= expr(B) AND expr(C). {
-  A = new Expr(TK_AND, B, C);
+  A = new BinaryExpr(TK_AND, B, C);
 }
 expr(A) ::= expr(B) OR expr(C). {
-  A = new Expr(TK_OR, B, C);
+  A = new BinaryExpr(TK_OR, B, C);
 }
 expr(A) ::= expr(B) LIKE expr(C). {
-  A = new Expr(TK_LIKE, B, C);
+  A = new BinaryExpr(TK_LIKE, B, C);
 }
 expr(A) ::= expr(B) PLUS|MINUS(OP) expr(C). {
-  A = new Expr(@OP, B, C);
+  A = new BinaryExpr(@OP, B, C);
 }
 expr(A) ::= expr(B) DIV|MOD|STAR(OP) expr(C). {
-  A = new Expr(@OP, B, C);
+  A = new BinaryExpr(@OP, B, C);
 }
 expr(A) ::= expr(B) GT|LT|EQ|GE|LE|NE(OP) expr(C). {
-  A = new Expr(@OP, B, C);
+  A = new BinaryExpr(@OP, B, C);
+  Value *v = dynamic_cast<Value*>(B);
+  if (v && v->id() != TK_STRING && v->id() != TK_INTEGER && v->id() != TK_FLOAT) {
+    v->set_is_attr(true);
+  }
 }
 
 where ::= .

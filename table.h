@@ -15,12 +15,15 @@ class Table;
 class Select;
 struct OrderList;
 
+vector<string> *FullHeader();
+
 class Row {
   friend class Table;
  public:
   Row() {};
   Row(const Row& other);
   ~Row();
+
   const Row& operator=(const Row& other);
 
   Variant *operator[](int index) { return row_[index]; }
@@ -31,8 +34,8 @@ class Row {
   void set_header(vector<string> *header) { header_ = header; }
 
   Variant *get(const string& name) const {
-    for (size_t i = 0; i < header_->size(); i ++) {
-      if (header_->at(i) == name) return row_[i];
+    for (size_t i = 0; i < FullHeader()->size(); i ++) {
+      if (FullHeader()->at(i) == name) return row_[i];
     }
     return NULL;
   }
@@ -46,6 +49,8 @@ class Table {
   friend class Select;
  public:
   Table(const vector<string>& header) : header_(header) {}
+
+  static vector<string> *FullHeader();
 
  public:
   const vector<string>& Header() { return header_; }

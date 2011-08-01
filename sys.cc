@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <pwd.h>
@@ -7,8 +8,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <libgen.h>
 #include <string.h>
-#include <time.h>
 
 #include "sys.h"
 
@@ -23,7 +24,7 @@ static void AddFile(Table *tb, const char *path, const char *name) {
 
   Row row;
 
-  for (vector<string>::const_iterator ite = tb->Header().begin(); ite != tb->Header().end(); ++ite) {
+  for (vector<string>::const_iterator ite = FullHeader()->begin(); ite != FullHeader()->end(); ++ite) {
     if (*ite == "name") {
       row.push_back(new String(name));
     } else if (*ite == "path") {

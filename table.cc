@@ -7,6 +7,7 @@
 #include "parser.h"
 
 using std::sort;
+using std::max;
 
 Row::Row(const Row& other) {
   header_ = other.header_;
@@ -33,14 +34,28 @@ const Row& Row::operator=(const Row& other) {
 void Table::Print(bool head) {
   if (head) {
     for (vector<string>::iterator hi = header_.begin(); hi != header_.end(); ++hi) {
-      printf("%-15s ", hi->c_str());
+      printf("%s ", hi->c_str());
     }
     printf("\n");
   }
 
+  int *width = new int[header_.size()];
+
+  for (uint32_t i = 0; i < header_.size(); i++) {
+    width[i] = 1;
+    for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
+      int len = strlen(ri->get(header_[i])->c_str());
+      width[i] = max(len, width[i]);
+    }
+  }
+
+  width[header_.size() - 1] = -1;
+
   for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
-    for (vector<Variant*>::iterator ci = ri->begin(); ci != ri->end(); ++ci) {
-      printf("%-15s ", (*ci)->c_str());
+    for (uint32_t i = 0; i < header_.size(); i++) {
+      char fmt[10];
+      sprintf(fmt, "%%%ds ", width[i]);
+      printf(fmt, ri->get(header_[i])->c_str());
     }
     printf("\n");
   }
@@ -66,3 +81,25 @@ class RowCompare {
 void Table::Sort(OrderList *orders) {
   sort(rows_.begin(), rows_.end(), RowCompare(orders));
 }
+
+static vector<string> *full_header_ = NULL;
+
+vector<string> *FullHeader() {
+  if (full_header_) return full_header_;
+  full_header_ = new vector<string>();
+  full_header_->push_back(string("name"));
+  full_header_->push_back(string("path"));
+  full_header_->push_back(string("perms"));
+  full_header_->push_back(string("size"));
+  full_header_->push_back(string("inode"));
+  full_header_->push_back(string("uid"));
+  full_header_->push_back(string("gid"));
+  full_header_->push_back(string("uname"));
+  full_header_->push_back(string("gname"));
+  full_header_->push_back(string("time"));
+  full_header_->push_back(string("atime"));
+  full_header_->push_back(string("mtime"));
+  full_header_->push_back(string("ctime"));
+  return full_header_;
+}
+

@@ -6,8 +6,8 @@
 
 VERSION    = 0.1
 
-OBJFILES   = fql.cc ast.cc lexer.cc lexer-rl.cc table.cc variant.cc sys.cc
-INCFILES   = lexer.h ast.h table.h variant.h sys.h
+OBJFILES   = fql.cc ast.cc lexer.cc lexer-rl.cc table.cc variant.cc sys.cc expr.cc
+INCFILES   = lexer.h ast.h table.h variant.h sys.h expr.h
 
 CFLAGS_GEN = -Wall -g $(CFLAGS) -DVERSION=\"$(VERSION)\"
 CFLAGS_DBG = -ggdb $(CFLAGS_GEN)
