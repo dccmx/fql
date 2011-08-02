@@ -10,7 +10,7 @@ Select::~Select() {
 Table *Select::SelectDir(const string& dir) {
   Table *tb = new Table(*attrs_);
 
-  ListDir(tb, ".");
+  ListDir(tb, dir);
   if (orders_) tb->Sort(orders_);
 
   vector<Row> rows;
