@@ -60,6 +60,7 @@ class String : public Variant {
 class Int32 : public Variant {
  public:
   Int32(off_t value = 0) : value_(value) { sprintf(value_str_, "%d", value_); }
+  int32_t value() { return value_; }
   const char *c_str() { return value_str_; }
   bool c_bool() { return value_; }
   Variant *Clone() { return new Int32(value_); };
@@ -69,7 +70,7 @@ class Int32 : public Variant {
     if (o) {
       return value_ - o->value_;
     } else {
-      return strcasecmp(c_str(), o->c_str());
+      return strcasecmp(c_str(), other->c_str());
     }
   }
 
@@ -123,11 +124,13 @@ class FileSize : public Int32 {
  public:
   FileSize(off_t value);
   Variant *Clone() { return new FileSize(value_); };
+  int Compare(Variant *other);
 };
 
 class Float : public Variant {
  public:
   Float(off_t value) : value_(value) { sprintf(value_str_, "%lf", value_); }
+  double value() { return value_; }
   const char *c_str() { return value_str_; }
   bool c_bool() { return value_; }
   Variant *Clone() { return new Float(value_); };
@@ -137,7 +140,7 @@ class Float : public Variant {
     if (o) {
       return value_ - o->value_;
     } else {
-      return strcasecmp(c_str(), o->c_str());
+      return strcasecmp(c_str(), other->c_str());
     }
   }
 
@@ -192,7 +195,7 @@ class Time : public Variant {
     if (o) {
       return value_ - o->value_;
     } else {
-      return strcasecmp(c_str(), o->c_str());
+      return strcasecmp(c_str(), other->c_str());
     }
     return 0;
   }
@@ -214,7 +217,7 @@ class Permission : public Variant {
     if (o) {
       return value_ - o->value_;
     } else {
-      return strcasecmp(c_str(), o->c_str());
+      return strcasecmp(c_str(), other->c_str());
     }
   }
 
@@ -235,7 +238,7 @@ class Bool : public Variant {
     if (o) {
       return (value_? 1 : 0) - (o->value_? 1 : 0);
     } else {
-      return strcasecmp(c_str(), o->c_str());
+      return strcasecmp(c_str(), other->c_str());
     }
   }
 
