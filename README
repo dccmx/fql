@@ -22,6 +22,13 @@ available columns to select:
   mtime
   ctime
 
+supported syntax:
+  select [attrs]
+  from [folder]
+  where [expression]
+  order by [attrs]
+  limit [[start,] limit]
+
 Make:
   just type make.
 
