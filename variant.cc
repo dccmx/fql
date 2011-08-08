@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 
 #include "variant.h"
 
@@ -12,6 +13,33 @@ Time::Time(time_t value) {
   sprintf(value_str_, "%04d-%02d-%02d %02d:%02d:%02d", 
           1900 + tm.tm_year, tm.tm_mon + 1, tm.tm_mday, 
           tm.tm_hour, tm.tm_min, tm.tm_sec);
+}
+
+int Time::Compare(Variant *other) {
+  Time *o = dynamic_cast<Time*>(other);
+  if (o) {
+    return value_ - o->value_;
+  } else {
+    /*
+    1. DATE : YYYY-MM-DD
+    2. DATETIME : YYYY-MM-DD HH:MM:SS
+    3. TIMESTAMP : YYYY-MM-DD HH:MM:SS
+    4. YEAR : YYYY or YY
+    */
+    static const char *fmts[] = {"%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%Y", "%y"};
+    struct tm tv;
+    for (uint32_t i = 0; i < sizeof(fmts)/sizeof(fmts[0]); i++) {
+      memset(&tv, 0, sizeof(tv));
+      char *p = strptime(other->c_str(), fmts[i], &tv);
+      if ( p != NULL && *p == '\0') {
+        return value_ - mktime(&tv);
+      }
+    }
+
+    // failed to convert it to time. Compare them as string.
+    return strcasecmp(c_str(), other->c_str());
+  }
+  return 0;
 }
 
 Permission::Permission(uint32_t value) {

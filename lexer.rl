@@ -72,6 +72,7 @@
     dliteralChar = [^`"\\] | ( '\\' any );
     '"' (dliteralChar | '`')* '"' { STRING() };
     '`' (dliteralChar | '"')* '`' { STRING() };
+    "'" (dliteralChar | '"')* "'" { STRING() };
 
     (print - space - [,>=*])+ { ID() };
 
@@ -91,6 +92,7 @@ ParserContext Parse(char *str) {
   Token *tk = NULL;
 
   ParserContext context;
+  context.stmt = NULL;
 
   void *parser = ParseAlloc(malloc);
 
@@ -98,10 +100,11 @@ ParserContext Parse(char *str) {
   %% write exec;
 
   if (cs < %%{ write first_final; }%%) {
-    printf("error: %s\n", p);
+    printf("unrecognized: %s\n", p);
+    context.error = true;
+  } else {
+    Parse(parser, 0, 0, &context);
   }
-
-  Parse(parser, 0, 0, &context);
 
   ParseFree(parser, free);
 

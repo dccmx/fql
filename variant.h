@@ -190,15 +190,7 @@ class Time : public Variant {
   bool c_bool() { return true; }
   Variant *Clone() { return new Time(value_); };
 
-  int Compare(Variant *other) {
-    Time *o = dynamic_cast<Time*>(other);
-    if (o) {
-      return value_ - o->value_;
-    } else {
-      return strcasecmp(c_str(), other->c_str());
-    }
-    return 0;
-  }
+  int Compare(Variant *other);
 
  protected:
   time_t value_;
