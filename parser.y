@@ -141,10 +141,6 @@ expr(A) ::= expr(B) DIV|MOD|STAR(OP) expr(C). {
 }
 expr(A) ::= expr(B) GT|LT|EQ|GE|LE|NE(OP) expr(C). {
   A = new BinaryExpr(@OP, B, C);
-  Value *v = dynamic_cast<Value*>(B);
-  if (v && v->id() != TK_STRING && v->id() != TK_INTEGER && v->id() != TK_FLOAT) {
-    v->set_is_attr(true);
-  }
 }
 
 where ::= .

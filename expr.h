@@ -12,8 +12,7 @@ class Expr {
 
 class BinaryExpr : public Expr{
  public:
-  BinaryExpr(int op = 0, Expr *left = NULL, Expr *right = NULL)
-      : op_(op), left_(left), right_(right) {}
+  BinaryExpr(int op = 0, Expr *left = NULL, Expr *right = NULL);
   ~BinaryExpr() { delete left_; delete right_;}
 
   Variant *Evaluate(Row *row);

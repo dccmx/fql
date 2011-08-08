@@ -47,6 +47,7 @@
     /or/i { KEYWORD(TK_OR) };
     /and/i { KEYWORD(TK_AND) };
     /not/i { KEYWORD(TK_NOT) };
+    /like/i { KEYWORD(TK_LIKE) };
     /from/i { KEYWORD(TK_FROM) };
     /order/i { KEYWORD(TK_ORDER) };
     /by/i { KEYWORD(TK_BY) };

@@ -1,6 +1,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <sys/types.h>
+#include <regex.h>
 
 #include "variant.h"
 
@@ -125,5 +127,30 @@ int FileSize::Compare(Variant *other) {
       return strcasecmp(c_str(), other->c_str());
     }
   }
+}
+
+bool String::Like(Variant *other) {
+  String *o = dynamic_cast<String*>(other);
+  if (!o) return false;
+
+  regex_t reg;
+  if (regcomp(&reg, o->c_str(), REG_EXTENDED) != 0) {
+    return false;
+  }
+
+  regmatch_t stRegMatch;
+  int nRet = regexec(&reg, c_str(), 1, &stRegMatch, 0);
+  if (nRet == REG_NOMATCH) {
+    return false;
+  } else if (nRet != 0) {
+    return false;
+  }
+
+  if(stRegMatch.rm_so == 0 && stRegMatch.rm_eo == static_cast<int>(value_.length())) {
+    return true;
+  }
+
+  regfree(&reg);
+  return false;
 }
 

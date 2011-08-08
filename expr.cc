@@ -3,6 +3,13 @@
 #include "parser.h"
 #include "expr.h"
 
+BinaryExpr::BinaryExpr(int op, Expr *left, Expr *right) : op_(op), left_(left), right_(right) {
+  Value *v = dynamic_cast<Value*>(left_);
+  if (v && v->id() != TK_STRING && v->id() != TK_INTEGER && v->id() != TK_FLOAT) {
+    v->set_is_attr(true);
+  }
+}
+
 #define PREPARE_PARAM  \
   if (left_) left = left_->Evaluate(row); \
   if (right_) right = right_->Evaluate(row);
@@ -55,6 +62,9 @@ Variant *BinaryExpr::Evaluate(Row *row) {
     case TK_AND:
       LOGIC_OP(And);
       break;
+    case TK_LIKE:
+      LOGIC_OP(Like);
+      break;
     case TK_GT:
       COMPARE_OP(>);
       break;
@@ -72,12 +82,6 @@ Variant *BinaryExpr::Evaluate(Row *row) {
       break;
     case TK_NE:
       COMPARE_OP(<=);
-      break;
-    case TK_LIKE:
-      PREPARE_PARAM;
-      if (right) {
-        ret = new Bool(!right->c_bool());
-      }
       break;
     default:
       break;
