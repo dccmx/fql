@@ -198,6 +198,27 @@ class Time : public Variant {
   char value_str_[25];
 };
 
+class TypePermission : public Variant {
+ public:
+  TypePermission(uint32_t value);
+  const char *c_str() { return value_str_; }
+  bool c_bool() { return value_; }
+  Variant *Clone() { return new TypePermission(value_); };
+
+  int Compare(Variant *other) {
+    TypePermission *o = dynamic_cast<TypePermission*>(other);
+    if (o) {
+      return value_ - o->value_;
+    } else {
+      return strcasecmp(c_str(), other->c_str());
+    }
+  }
+
+ protected:
+  uint32_t value_;
+  char value_str_[11];
+};
+
 class Permission : public Variant {
  public:
   Permission(uint32_t value);

@@ -58,19 +58,20 @@ name(A) ::= ID|STRING|FLOAT|INTEGER(B). {
   A = B;
 }
 
-cols(A) ::= STAR(B). {
+cols(A) ::= attrlist(B). {
+  A = B;
+}
+
+attrlist(A) ::= STAR(B). {
   A = new vector<string>();
-  A->push_back(string("perms"));
+  A->push_back(string("tperms"));
+  A->push_back(string("nlink"));
   A->push_back(string("uname"));
   A->push_back(string("gname"));
   A->push_back(string("size"));
   A->push_back(string("time"));
   A->push_back(string("name"));
   delete B;
-}
-
-cols(A) ::= attrlist(B). {
-  A = B;
 }
 
 attrlist(A) ::= name(B). {
@@ -80,9 +81,21 @@ attrlist(A) ::= name(B). {
 }
 
 attrlist(A) ::= attrlist(B) COMMA name(C). {
-  B->push_back(string(C->str));
-  delete C;
   A = B;
+  A->push_back(string(C->str));
+  delete C;
+}
+
+attrlist(A) ::= attrlist(B) COMMA STAR(C). {
+  A = B;
+  A->push_back(string("tperms"));
+  A->push_back(string("nlink"));
+  A->push_back(string("uname"));
+  A->push_back(string("gname"));
+  A->push_back(string("size"));
+  A->push_back(string("time"));
+  A->push_back(string("name"));
+  delete C;
 }
 
 from ::= .

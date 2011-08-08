@@ -90,6 +90,8 @@ vector<string> *FullHeader() {
   full_header_->push_back(string("name"));
   full_header_->push_back(string("path"));
   full_header_->push_back(string("perms"));
+  full_header_->push_back(string("tperms"));
+  full_header_->push_back(string("nlink"));
   full_header_->push_back(string("size"));
   full_header_->push_back(string("inode"));
   full_header_->push_back(string("uid"));

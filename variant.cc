@@ -2,6 +2,8 @@
 #include <string.h>
 #include <time.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <regex.h>
 
 #include "variant.h"
@@ -44,21 +46,38 @@ int Time::Compare(Variant *other) {
   return 0;
 }
 
-Permission::Permission(uint32_t value) {
-   // use octarray for determining if permission bits set
-   //it means rwx rwx rwx
-  static short octarray[9]={0400,0200,0100,
-    0040,0020,0010,
-    0004,0002,0001};
-
+TypePermission::TypePermission(uint32_t value) {
+   // use octarray for determining if permission bits set it means rwx rwx rwx
+  static short octarray[9]={0400,0200,0100, 0040,0020,0010, 0004,0002,0001};
   value_ = value;
 
-  /*record the file permission format as rwxrwxrwx,use
-   * 10 chars long becausr the last one is null
-   */
+  // record the file permission format as rwxrwxrwx,use 10 chars long becausr the last one is null
+  strcpy(value_str_, "-rwxrwxrwx");
+
+  if (S_ISREG(value_)) value_str_[0] = '-';
+  else if (S_ISBLK(value_)) value_str_[0] = 'b';
+  else if (S_ISCHR(value_)) value_str_[0] = 'c';
+  else if (S_ISDIR(value_)) value_str_[0] = 'd';
+  else if (S_ISLNK(value_)) value_str_[0] = 'l';
+  else if (S_ISFIFO(value_)) value_str_[0] = 'p';
+  else if (S_ISSOCK(value_)) value_str_[0] = 's';
+                                                                                
+  for(int i = 0; i < 9; i++) {
+    if (!(value_ & octarray[i])) {
+      value_str_[i + 1]='-';
+    }
+  }
+}
+
+Permission::Permission(uint32_t value) {
+   // use octarray for determining if permission bits set it means rwx rwx rwx
+  static short octarray[9]={0400,0200,0100, 0040,0020,0010, 0004,0002,0001};
+  value_ = value;
+
+  // record the file permission format as rwxrwxrwx,use 10 chars long becausr the last one is null
   strcpy(value_str_, "rwxrwxrwx");
 
-  for(int i=0; i<9; i++) {
+  for(int i = 0; i < 9; i++) {
     if (!(value_ & octarray[i])) {
       value_str_[i]='-';
     }

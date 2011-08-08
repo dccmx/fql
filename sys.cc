@@ -31,6 +31,10 @@ static void AddFile(Table *tb, const char *path, const char *name) {
       row.push_back(new String(path));
     } else if (*ite == "perms") {
       row.push_back(new Permission(st.st_mode));
+    } else if (*ite == "tperms") {
+      row.push_back(new TypePermission(st.st_mode));
+    } else if (*ite == "nlink") {
+      row.push_back(new Int32(st.st_nlink));
     } else if (*ite == "size") {
       row.push_back(new FileSize(st.st_size));
     } else if (*ite == "inode") {
@@ -51,6 +55,8 @@ static void AddFile(Table *tb, const char *path, const char *name) {
       row.push_back(new Time(st.st_mtime));
     } else if (*ite == "ctime") {
       row.push_back(new Time(st.st_ctime));
+    } else {
+      fprintf(stderr, "unknow attribute: %s\n", ite->c_str());
     }
   }
 
