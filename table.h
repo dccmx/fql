@@ -15,7 +15,7 @@ class Table;
 class Select;
 struct OrderList;
 
-vector<string> *FullHeader();
+const vector<string>& FullHeader();
 
 class Row {
   friend class Table;
@@ -34,8 +34,8 @@ class Row {
   void set_header(vector<string> *header) { header_ = header; }
 
   Variant *get(const string& name) const {
-    for (size_t i = 0; i < FullHeader()->size(); i ++) {
-      if (FullHeader()->at(i) == name) return row_[i];
+    for (size_t i = 0; i < FullHeader().size(); i ++) {
+      if (FullHeader()[i] == name) return row_[i];
     }
     return NULL;
   }

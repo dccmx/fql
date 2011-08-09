@@ -126,13 +126,10 @@ folderlist(A) ::= folderlist(B) COMMA name(C). {
 
 expr(A) ::= name(B). {
   A = new Value(B->ToVariant(), @B);
+  delete B;
 }
 expr(A) ::= NOT expr(B). {
   A = new UnaryExpr(TK_NOT, B);
-  Value *v = dynamic_cast<Value*>(B);
-  if (v && v->id() == TK_ID) {
-    v->set_is_attr(true);
-  }
 }
 expr(A) ::= LP expr(B) RP. {
   A = B;
@@ -148,12 +145,15 @@ expr(A) ::= expr(B) LIKE expr(C). {
 }
 expr(A) ::= expr(B) PLUS|MINUS(OP) expr(C). {
   A = new BinaryExpr(@OP, B, C);
+  delete OP;
 }
 expr(A) ::= expr(B) DIV|MOD|STAR(OP) expr(C). {
   A = new BinaryExpr(@OP, B, C);
+  delete OP;
 }
 expr(A) ::= expr(B) GT|LT|EQ|GE|LE|NE(OP) expr(C). {
   A = new BinaryExpr(@OP, B, C);
+  delete OP;
 }
 
 where ::= .

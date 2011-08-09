@@ -75,7 +75,7 @@
     '`' (dliteralChar | '"')* '`' { STRING() };
     "'" (dliteralChar | '"')* "'" { STRING() };
 
-    (print - space - [,>=*])+ { ID() };
+    (print - space - [,<>=\*])+ { ID() };
 
     space;
   *|;

@@ -901,62 +901,60 @@ static void yy_reduce(
 #line 127 "parser.y"
 {
   yygotominor.yy2 = new Value(yymsp[0].minor.yy0->ToVariant(), yymsp[0].major);
+  delete yymsp[0].minor.yy0;
 }
-#line 906 "parser.c"
+#line 907 "parser.c"
         break;
       case 15: /* expr ::= NOT expr */
-#line 130 "parser.y"
+#line 131 "parser.y"
 {
   yygotominor.yy2 = new UnaryExpr(TK_NOT, yymsp[0].minor.yy2);
-  Value *v = dynamic_cast<Value*>(yymsp[0].minor.yy2);
-  if (v && v->id() == TK_ID) {
-    v->set_is_attr(true);
-  }
   yy_destructor(yypParser,15,&yymsp[-1].minor);
 }
-#line 918 "parser.c"
+#line 915 "parser.c"
         break;
       case 16: /* expr ::= LP expr RP */
-#line 137 "parser.y"
+#line 134 "parser.y"
 {
   yygotominor.yy2 = yymsp[-1].minor.yy2;
   yy_destructor(yypParser,25,&yymsp[-2].minor);
   yy_destructor(yypParser,26,&yymsp[0].minor);
 }
-#line 927 "parser.c"
+#line 924 "parser.c"
         break;
       case 17: /* expr ::= expr AND expr */
-#line 140 "parser.y"
+#line 137 "parser.y"
 {
   yygotominor.yy2 = new BinaryExpr(TK_AND, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
   yy_destructor(yypParser,17,&yymsp[-1].minor);
 }
-#line 935 "parser.c"
+#line 932 "parser.c"
         break;
       case 18: /* expr ::= expr OR expr */
-#line 143 "parser.y"
+#line 140 "parser.y"
 {
   yygotominor.yy2 = new BinaryExpr(TK_OR, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
   yy_destructor(yypParser,16,&yymsp[-1].minor);
 }
-#line 943 "parser.c"
+#line 940 "parser.c"
         break;
       case 19: /* expr ::= expr LIKE expr */
-#line 146 "parser.y"
+#line 143 "parser.y"
 {
   yygotominor.yy2 = new BinaryExpr(TK_LIKE, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
   yy_destructor(yypParser,18,&yymsp[-1].minor);
 }
-#line 951 "parser.c"
+#line 948 "parser.c"
         break;
       case 20: /* expr ::= expr PLUS|MINUS expr */
       case 21: /* expr ::= expr DIV|MOD|STAR expr */ yytestcase(yyruleno==21);
       case 22: /* expr ::= expr GT|LT|EQ|GE|LE|NE expr */ yytestcase(yyruleno==22);
-#line 149 "parser.y"
+#line 146 "parser.y"
 {
   yygotominor.yy2 = new BinaryExpr(yymsp[-1].major, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
+  delete yymsp[-1].minor.yy0;
 }
-#line 960 "parser.c"
+#line 958 "parser.c"
         break;
       case 24: /* where ::= WHERE expr */
 #line 160 "parser.y"
@@ -964,7 +962,7 @@ static void yy_reduce(
   yygotominor.yy2 = yymsp[0].minor.yy2;
   yy_destructor(yypParser,27,&yymsp[-1].minor);
 }
-#line 968 "parser.c"
+#line 966 "parser.c"
         break;
       case 25: /* orderlist ::= name order */
 #line 164 "parser.y"
@@ -974,7 +972,7 @@ static void yy_reduce(
   if (yymsp[0].minor.yy0) yygotominor.yy19->dirs.push_back(yymsp[0].minor.yy0->value);
   else yygotominor.yy19->dirs.push_back(TK_ASC);
 }
-#line 978 "parser.c"
+#line 976 "parser.c"
         break;
       case 26: /* orderlist ::= orderlist COMMA name order */
 #line 170 "parser.y"
@@ -985,7 +983,7 @@ static void yy_reduce(
   yygotominor.yy19 = yymsp[-3].minor.yy19;
   yy_destructor(yypParser,9,&yymsp[-2].minor);
 }
-#line 989 "parser.c"
+#line 987 "parser.c"
         break;
       case 30: /* orderby ::= ORDER BY orderlist */
 #line 183 "parser.y"
@@ -994,14 +992,14 @@ static void yy_reduce(
   yy_destructor(yypParser,30,&yymsp[-2].minor);
   yy_destructor(yypParser,31,&yymsp[-1].minor);
 }
-#line 998 "parser.c"
+#line 996 "parser.c"
         break;
       case 31: /* limit ::= */
 #line 187 "parser.y"
 {
   yygotominor.yy78 = new Limit();
 }
-#line 1005 "parser.c"
+#line 1003 "parser.c"
         break;
       case 32: /* limit ::= LIMIT INTEGER */
 #line 190 "parser.y"
@@ -1011,7 +1009,7 @@ static void yy_reduce(
   delete yymsp[0].minor.yy0;
   yy_destructor(yypParser,32,&yymsp[-1].minor);
 }
-#line 1015 "parser.c"
+#line 1013 "parser.c"
         break;
       case 33: /* limit ::= LIMIT INTEGER COMMA INTEGER */
 #line 195 "parser.y"
@@ -1024,7 +1022,7 @@ static void yy_reduce(
   yy_destructor(yypParser,32,&yymsp[-3].minor);
   yy_destructor(yypParser,9,&yymsp[-1].minor);
 }
-#line 1028 "parser.c"
+#line 1026 "parser.c"
         break;
       default:
       /* (4) distinct ::= */ yytestcase(yyruleno==4);
@@ -1096,7 +1094,7 @@ static void yy_syntax_error(
   if (TOKEN) printf("syntax error near: %s\n", TOKEN->str);
   else printf("syntax error\n");
   ctx->error = true;
-#line 1100 "parser.c"
+#line 1098 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -1116,7 +1114,7 @@ static void yy_accept(
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
 #line 6 "parser.y"
-#line 1120 "parser.c"
+#line 1118 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

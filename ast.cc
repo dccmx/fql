@@ -5,6 +5,9 @@
 Select::~Select() {
   delete attrs_;
   delete folders_;
+  delete where_;
+  delete orders_;
+  delete limit_;
 }
 
 Table *Select::SelectDir(const string& dir) {
@@ -17,13 +20,16 @@ Table *Select::SelectDir(const string& dir) {
   for (uint32_t i = 0; i < tb->rows_.size(); i++) {
     if (where_) {
       Variant *v = where_->Evaluate(&tb->rows_[i]);
-      if (!v || !v->c_bool()) continue;
+      bool valid = v && v->c_bool();
+      if (v) delete v;
+      if (!valid) continue;
     }
     rows.push_back(Row(tb->rows_[i]));
   }
   tb->rows_ = rows;
 
   rows.clear();
+
   uint32_t start = limit_->start;
   uint32_t limit = (limit_->limit == -1)? tb->rows_.size() : limit_->limit;
   for (uint32_t i = start; i < start + limit && i < tb->rows_.size(); i++) {

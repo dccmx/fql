@@ -111,7 +111,8 @@ static int GetSize(const char *str) {
     p++;
   }
 
-  if (*p == '\0') return -1;
+  // pure number
+  if (*p == '\0') return 1;
 
   int v = -1;
   for (int i = 1; i < 4; i++) {
@@ -141,6 +142,7 @@ int FileSize::Compare(Variant *other) {
       double v = 0;
       int m = GetSize(c_str());
       sscanf(c_str(), "%lf", &v);
+      // printf("%s %d %lf - %d %lf [%d]\n", other->c_str(), m, v, m1, v1, int(v * m - v1 * m1));
       return v * m - v1 * m1;
     } else {
       return strcasecmp(c_str(), other->c_str());
@@ -156,13 +158,13 @@ bool Variant::Like(Variant *other) {
 
   regmatch_t stRegMatch;
   int nRet = regexec(&reg, c_str(), 1, &stRegMatch, 0);
-  if (nRet == REG_NOMATCH) {
-    return false;
-  } else if (nRet != 0) {
+  if (nRet != 0  || nRet == REG_NOMATCH) {
+    regfree(&reg);
     return false;
   }
 
   if(stRegMatch.rm_so == 0 && c_str()[stRegMatch.rm_eo] == '\0') {
+    regfree(&reg);
     return true;
   }
 

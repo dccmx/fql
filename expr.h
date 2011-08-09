@@ -6,6 +6,7 @@
 
 class Expr {
  public:
+  virtual ~Expr() {};
   virtual Variant *Evaluate(Row *row) = 0;
   virtual void Print(int indent = 0) = 0;
 };
@@ -26,8 +27,7 @@ class BinaryExpr : public Expr{
 
 class UnaryExpr : public Expr {
  public:
-  UnaryExpr(int op = 0, Expr *right = NULL)
-      : op_(op), right_(right) {}
+  UnaryExpr(int op = 0, Expr *right = NULL);
 
   ~UnaryExpr() { delete right_; }
 
@@ -55,7 +55,7 @@ class Value : public Expr {
   int id() { return id_; }
 
   Variant *Evaluate(Row *row) {
-    if (is_attr_) return row->get(value_->c_str());
+    if (is_attr_) return row->get(value_->c_str())->Clone();
     else return value_->Clone();
   }
 

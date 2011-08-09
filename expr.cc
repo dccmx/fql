@@ -3,6 +3,13 @@
 #include "parser.h"
 #include "expr.h"
 
+UnaryExpr::UnaryExpr(int op, Expr *right) : op_(op), right_(right) {
+  Value *v = dynamic_cast<Value*>(right_);
+  if (v && v->id() != TK_STRING && v->id() != TK_INTEGER && v->id() != TK_FLOAT) {
+    v->set_is_attr(true);
+  }
+}
+
 BinaryExpr::BinaryExpr(int op, Expr *left, Expr *right) : op_(op), left_(left), right_(right) {
   Value *v = dynamic_cast<Value*>(left_);
   if (v && v->id() != TK_STRING && v->id() != TK_INTEGER && v->id() != TK_FLOAT) {
@@ -81,11 +88,13 @@ Variant *BinaryExpr::Evaluate(Row *row) {
       COMPARE_OP(<=);
       break;
     case TK_NE:
-      COMPARE_OP(<=);
+      COMPARE_OP(!=);
       break;
     default:
       break;
   }
+  if (left) delete left;
+  if (right) delete right;
   return ret;
 }
 
@@ -114,6 +123,7 @@ Variant *UnaryExpr::Evaluate(Row *row) {
     default:
       break;
   }
+  if (right) delete right;
   return ret;
 }
 

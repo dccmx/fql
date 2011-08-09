@@ -24,7 +24,7 @@ static void AddFile(Table *tb, const char *path, const char *name) {
 
   Row row;
 
-  for (vector<string>::const_iterator ite = FullHeader()->begin(); ite != FullHeader()->end(); ++ite) {
+  for (vector<string>::const_iterator ite = FullHeader().begin(); ite != FullHeader().end(); ++ite) {
     if (*ite == "name") {
       row.push_back(new String(name));
     } else if (*ite == "path") {
