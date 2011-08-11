@@ -12,7 +12,7 @@ using std::string;
 class Variant {
  public:
   virtual ~Variant() = 0;
-  virtual const char *c_str() = 0;
+  virtual const char *c_str() { return NULL; }
   virtual bool c_bool() = 0;
   virtual Variant *Clone() = 0;
   virtual int Compare(Variant *other) = 0;
@@ -22,7 +22,7 @@ class Variant {
   virtual Variant *Mult(Variant *other)  { return NULL; }
   virtual Variant *Div(Variant *other)  { return NULL; }
   virtual Variant *Mod(Variant *other)  { return NULL; }
-  virtual bool Like(Variant *other)  { return false; }
+  virtual bool Like(Variant *other);
   virtual bool Not()  { return !c_bool(); }
   virtual bool And(Variant *other)  { return c_bool() && other->c_bool(); }
   virtual bool Or(Variant *other)  { return c_bool() || other->c_bool(); }
@@ -38,8 +38,6 @@ class String : public Variant {
   int Compare(Variant *other) {
     return strcasecmp(c_str(), other->c_str());
   }
-
-  bool Like(Variant *other);
 
   Variant *Plus(Variant *other) {
     String *o = dynamic_cast<String*>(other);

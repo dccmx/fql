@@ -129,12 +129,9 @@ int FileSize::Compare(Variant *other) {
   }
 }
 
-bool String::Like(Variant *other) {
-  String *o = dynamic_cast<String*>(other);
-  if (!o) return false;
-
+bool Variant::Like(Variant *other) {
   regex_t reg;
-  if (regcomp(&reg, o->c_str(), REG_EXTENDED) != 0) {
+  if (regcomp(&reg, other->c_str(), REG_EXTENDED) != 0) {
     return false;
   }
 
@@ -146,7 +143,7 @@ bool String::Like(Variant *other) {
     return false;
   }
 
-  if(stRegMatch.rm_so == 0 && stRegMatch.rm_eo == static_cast<int>(value_.length())) {
+  if(stRegMatch.rm_so == 0 && c_str()[stRegMatch.rm_eo] == '\0') {
     return true;
   }
 
