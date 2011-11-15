@@ -2,3 +2,4 @@ fql
 .svn
 memcheck.log
 parser.out
+fql.dSYM/
