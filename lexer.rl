@@ -39,7 +39,7 @@
 
   main := |*
     ('-'|'+')? [1-9][0-9]* { INTEGER() };
-    ('-'|'+')? [1-9][0-9]* '.' [0-9]+{ FLOAT() };
+    ('-'|'+')? [0-9]* '.' [0-9]+{ FLOAT() };
 
     /select/i { KEYWORD(TK_SELECT) };
     /quit/i { KEYWORD(TK_QUIT) };
