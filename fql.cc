@@ -5,6 +5,13 @@
 #include "sys.h"
 #include "variant.h"
 
+#include <config.h>
+
+#if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
+# include <readline/readline.h>
+# include <readline/history.h>
+#endif
+
 void ExecuteSQL(char *sql) {
   ParserContext parse = Parse(sql);
   if (!parse.error) {
@@ -38,7 +45,7 @@ char *ParseArgs(int argc, char **argv) {
       if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
         usage();
       } else if (!strcmp(argv[i], "-v")) {
-        printf("fql "VERSION"\n\n");
+        printf("fql %s\n\n", VERSION);
         exit(EXIT_SUCCESS);
       } else {
         fprintf(stderr, "unknow option %s\n", argv[i]);
@@ -57,12 +64,24 @@ int main(int argc, char **argv) {
   if (sql) {
     ExecuteSQL(sql);
   } else {
-    char sql[1024];
     while (true) {
-      if (isatty(STDIN_FILENO)) printf("> ");
+      if (isatty(STDIN_FILENO)) {
+#if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
+          sql = readline("> ");
+          if( sql && *sql ) 
+              add_history(sql);
+          else
+              continue;
+      }
+#else
+          printf("> ");
+      }
+      char sql[1024];
       fgets(sql, 1024, stdin);
+#endif
       if (feof(stdin)) break;
       ExecuteSQL(sql);
     }
   }
+  return 0;
 }
