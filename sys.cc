@@ -44,11 +44,17 @@ static void AddFile(Table *tb, const char *path, const char *name) {
     } else if (*ite == "gid") {
       row.push_back(new Int32(st.st_gid));
     } else if (*ite == "uname") {
-      struct passwd *passwd = getpwuid(st.st_uid);
-      row.push_back(new String(passwd->pw_name));
+      struct passwd *pw = getpwuid(st.st_uid);
+      if (pw)
+          row.push_back(new String(pw->pw_name));
+      else
+          row.push_back(new String(""));
     } else if (*ite == "gname") {
       struct group *grp = getgrgid(st.st_gid);
-      row.push_back(new String(grp->gr_name));
+      if (grp)
+          row.push_back(new String(grp->gr_name));
+      else
+          row.push_back(new String(""));
     } else if (*ite == "atime") {
       row.push_back(new Time(st.st_atime));
     } else if (*ite == "mtime" || *ite == "time") {
