@@ -63,9 +63,13 @@ int main(int argc, char **argv) {
 
   if (str) {
     ExecuteSQL(str);
+    free(str);
   } else {
-    char tmp[1024];
     while (true) {
+      if (str) {
+          free(str);
+          str = (char *)NULL;
+      }
 #if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
       if (isatty(STDIN_FILENO)) {
           str = readline("> ");
@@ -79,11 +83,16 @@ int main(int argc, char **argv) {
       }
 #else
       if (isatty(STDIN_FILENO)) printf("> ");
-      str = fgets(tmp, 1024, stdin);
+      char str[1024];
+      fgets(str, 1024, stdin);
       if (feof(stdin)) break;
       if (!str || !strcmp("\n", str) || !strcmp("\r\n", str)) continue;
 #endif
       if (!strcmp("exit",str) || !strcmp("exit\n", str)) {
+#if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
+          free(str);
+          clear_history();
+#endif
           printf("bye\n");
           break;
       }
