@@ -64,6 +64,7 @@ int main(int argc, char **argv) {
   if (str) {
     ExecuteSQL(str);
   } else {
+    char tmp[1024];
     while (true) {
 #if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
       if (isatty(STDIN_FILENO)) {
@@ -78,9 +79,9 @@ int main(int argc, char **argv) {
       }
 #else
       if (isatty(STDIN_FILENO)) printf("> ");
-      char str[1024];
-      fgets(str, 1024, stdin);
+      str = fgets(tmp, 1024, stdin);
       if (feof(stdin)) break;
+      if (!str || !strcmp("\n", str) || !strcmp("\r\n", str)) continue;
 #endif
       if (!strcmp("exit",str) || !strcmp("exit\n", str)) {
           printf("bye\n");
