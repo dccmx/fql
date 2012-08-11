@@ -59,28 +59,34 @@ char *ParseArgs(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
-  char *sql = ParseArgs(argc, argv);
+  char *str = ParseArgs(argc, argv);
 
-  if (sql) {
-    ExecuteSQL(sql);
+  if (str) {
+    ExecuteSQL(str);
   } else {
     while (true) {
-      if (isatty(STDIN_FILENO)) {
 #if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
-          sql = readline("> ");
-          if( sql && *sql ) 
-              add_history(sql);
+      if (isatty(STDIN_FILENO)) {
+          str = readline("> ");
+          if( str && *str ) 
+              add_history(str);
           else
               continue;
+      } else {
+          str = readline("");
+          if (! str) break;
       }
 #else
-          printf("> ");
-      }
-      char sql[1024];
-      fgets(sql, 1024, stdin);
-#endif
+      if (isatty(STDIN_FILENO)) printf("> ");
+      char str[1024];
+      fgets(str, 1024, stdin);
       if (feof(stdin)) break;
-      ExecuteSQL(sql);
+#endif
+      if (!strcmp("exit",str) || !strcmp("exit\n", str)) {
+          printf("bye\n");
+          exit(0);
+      }
+      ExecuteSQL(str);
     }
   }
   return 0;
