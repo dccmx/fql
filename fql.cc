@@ -85,10 +85,9 @@ int main(int argc, char **argv) {
 #endif
       if (!strcmp("exit",str) || !strcmp("exit\n", str)) {
           printf("bye\n");
-          exit(0);
+          break;
       }
       ExecuteSQL(str);
     }
   }
-  return 0;
 }
