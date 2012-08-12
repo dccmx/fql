@@ -1,0 +1,36 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+AC_INIT([fql], [0.1], [dccmx@dccmx.com])
+AM_INIT_AUTOMAKE(fql,0.1)
+AC_CONFIG_SRCDIR([ast.cc])
+AC_CONFIG_HEADERS(config.h)
+
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-lreadline':
+AC_CHECK_LIB([readline], [readline])
+
+# Checks for header files.
+AC_CHECK_HEADERS([fcntl.h limits.h stdint.h stdlib.h string.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_TYPE_INT32_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_TYPE_UINT32_T
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MKTIME
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([localtime_r memset regcomp select strcasecmp])
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
