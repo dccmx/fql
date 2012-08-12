@@ -29,8 +29,9 @@ supported syntax:
   order by [attrs]
   limit [[start,] limit]
 
-Make:
-  just type make.
+Make (libreadline is optional):
+  ./configure && make
 
 Install:
   copy ./fql to where you like such as /usr/local/bin/.
+  or make install
