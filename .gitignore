@@ -1,4 +1,5 @@
 fql
+*.o
 .svn
 memcheck.log
 parser.out
