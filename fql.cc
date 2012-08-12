@@ -1,16 +1,20 @@
 #include <unistd.h>
+#include <string.h>
 
+#include "config.h"
 #include "lexer.h"
 #include "ast.h"
 #include "sys.h"
 #include "variant.h"
 
-#include <config.h>
-
 #if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
 # include <readline/readline.h>
 # include <readline/history.h>
+# define GetSQLFromInput GetSQLFromReadline
+#else
+# define GetSQLFromInput GetSQLFromStdin
 #endif
+
 
 void ExecuteSQL(char *sql) {
   ParserContext parse = Parse(sql);
@@ -58,45 +62,59 @@ char *ParseArgs(int argc, char **argv) {
   return sql;
 }
 
+char *GetSQLFromReadline() {
+  char * str = NULL;
+
+  if (isatty(STDIN_FILENO)) {
+    str = readline("> ");
+  } else {
+    str = readline("");
+  }
+  if (str != NULL) {
+    add_history(str);
+  }
+
+  return str;
+}
+
+char *GetSQLFromStdin() {
+  while (true) {
+    char buf[1024];
+    if (isatty(STDIN_FILENO)) printf("> ");
+    fgets(buf, 1024, stdin);
+    if (feof(stdin)) {
+      return NULL;
+    }
+    if (strcmp("\n", buf) != 0 && !strcmp("\r\n", buf) != 0) {
+      return strdup(buf);
+    }
+  }
+  return NULL;
+}
+
 int main(int argc, char **argv) {
   char *str = ParseArgs(argc, argv);
 
   if (str) {
     ExecuteSQL(str);
-    free(str);
-  } else {
-    while (true) {
-      if (str) {
-          free(str);
-          str = (char *)NULL;
-      }
-#if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
-      if (isatty(STDIN_FILENO)) {
-          str = readline("> ");
-          if( str && *str ) 
-              add_history(str);
-          else
-              continue;
-      } else {
-          str = readline("");
-          if (! str) break;
-      }
-#else
-      if (isatty(STDIN_FILENO)) printf("> ");
-      char str[1024];
-      fgets(str, 1024, stdin);
-      if (feof(stdin)) break;
-      if (!str || !strcmp("\n", str) || !strcmp("\r\n", str)) continue;
-#endif
-      if (!strcmp("exit",str) || !strcmp("exit\n", str)) {
-#if defined(HAVE_LIBREADLINE) && HAVE_LIBREADLINE==1
-          free(str);
-          clear_history();
-#endif
-          printf("bye\n");
-          break;
-      }
+    return 0;
+  }
+
+  while (true) {
+    str = GetSQLFromInput();
+
+    if (str == NULL) break;
+
+    if (strcmp("", str) == 0) {
+      // do nothing
+    } else if (!strcmp("exit", str) || !strcmp("exit\n", str)) {
+      printf("bye\n");
+    } else {
       ExecuteSQL(str);
     }
+
+    free(str);
   }
+
+  return 0;
 }

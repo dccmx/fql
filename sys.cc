@@ -45,16 +45,18 @@ static void AddFile(Table *tb, const char *path, const char *name) {
       row.push_back(new Int32(st.st_gid));
     } else if (*ite == "uname") {
       struct passwd *pw = getpwuid(st.st_uid);
-      if (pw)
+      if (pw) {
           row.push_back(new String(pw->pw_name));
-      else
+      } else {
           row.push_back(new String(""));
+      }
     } else if (*ite == "gname") {
       struct group *grp = getgrgid(st.st_gid);
-      if (grp)
+      if (grp) {
           row.push_back(new String(grp->gr_name));
-      else
+      } else {
           row.push_back(new String(""));
+      }
     } else if (*ite == "atime") {
       row.push_back(new Time(st.st_atime));
     } else if (*ite == "mtime" || *ite == "time") {
@@ -83,4 +85,3 @@ void ListDir(Table *tb, const string& dir) {
 
   closedir(dp);
 }
-

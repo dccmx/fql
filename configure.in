@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([fql], [0.1], [dccmx@dccmx.com])
-AM_INIT_AUTOMAKE(fql,0.1)
+AC_INIT([fql], [0.1.1], [dccmx@dccmx.com])
+AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([ast.cc])
 AC_CONFIG_HEADERS(config.h)
 
