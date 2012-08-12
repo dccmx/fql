@@ -10,7 +10,6 @@ fql.dSYM/
 m4/
 autom4te.cache/
 Makefile
-Makefile.in
 config.h
 config.h.in
 config.log
