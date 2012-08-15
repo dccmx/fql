@@ -2,7 +2,7 @@ fql
 ===
   fql is a tool that use SQL like query to manipulate files.
 
-example
+Example
 -------
     fql "select time, size, name from ../"
     fql "select time, size, name from abc -r"  # scan abc recursivly
@@ -12,33 +12,33 @@ example
     echo "select * from . " | fql
     or run fql to query intractivly
 
-available columns to select
+Available columns to select
 ---------------------------
-  name
-  path
-  perms
-  size
-  inode
-  uid
-  gid
-  uname
-  gname
-  atime
-  time : same as atime
-  mtime
-  ctime
+    name
+    path
+    perms
+    size
+    inode
+    uid
+    gid
+    uname
+    gname
+    atime
+    time : same as atime
+    mtime
+    ctime
 
-supported syntax
+Supported syntax
 ----------------
-  select [attrs]
-  from [folder] [-r]
-  where [expression]
-  order by [attrs]
-  limit [[start,] limit]
+    select [attrs]
+    from [folder] [-r]
+    where [expression]
+    order by [attrs]
+    limit [[start,] limit]
 
-build (libreadline is optional)
+Build (libreadline is optional)
 -----
-  ./configure && make
+    ./configure && make
 
 Install
 -------
