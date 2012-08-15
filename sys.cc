@@ -71,15 +71,21 @@ static void AddFile(Table *tb, const char *path, const char *name) {
   tb->Append(row);
 }
 
-void ListDir(Table *tb, const string& dir) {
+void ListDir(Table *tb, const string& dir, bool recursive) {
   DIR *dp;
   struct dirent *ent;
 
   if (!(dp = opendir(dir.c_str()))) return;
 
   while((ent = readdir(dp)) != NULL) {
-    if (strcmp(ent->d_name, ".") ==0) continue;
-    if (strcmp(ent->d_name, "..") ==0) continue;
+    if (strcmp(ent->d_name, ".") == 0) continue;
+    if (strcmp(ent->d_name, "..") == 0) continue;
+    if (recursive && (ent->d_type & DT_DIR)) {
+      string subdir = dir;
+      subdir += "/";
+      subdir += ent->d_name;
+      ListDir(tb, subdir, recursive);
+    }
     AddFile(tb, dir.c_str(), ent->d_name);
   }
 

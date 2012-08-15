@@ -7,6 +7,6 @@
 #include "table.h"
 
 
-void ListDir(Table *tb, const string& dir);
+void ListDir(Table *tb, const string& dir, bool recursive);
 
 #endif // SYS_H_

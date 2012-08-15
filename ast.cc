@@ -4,16 +4,16 @@
 
 Select::~Select() {
   delete attrs_;
-  delete folders_;
+  delete folder_;
   delete where_;
   delete orders_;
   delete limit_;
 }
 
-Table *Select::SelectDir(const string& dir) {
+Table *Select::SelectDir(const string& dir, bool recursive) {
   Table *tb = new Table(*attrs_);
 
-  ListDir(tb, dir);
+  ListDir(tb, dir, recursive);
   if (orders_) tb->Sort(orders_);
 
   vector<Row> rows;
@@ -40,10 +40,9 @@ Table *Select::SelectDir(const string& dir) {
   return tb;
 }
 Table *Select::Execute() {
-  if (folders_ == NULL) {
-    return SelectDir(".");
+  if (folder_ == NULL) {
+    return SelectDir(".", folder_->recursive);
   }
 
-  return SelectDir(*folders_->begin());
+  return SelectDir(folder_->name, folder_->recursive);
 }
-

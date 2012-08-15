@@ -58,17 +58,18 @@
 **                       defined, then do no error processing.
 */
 #define YYCODETYPE unsigned char
-#define YYNOCODE 49
+#define YYNOCODE 51
 #define YYACTIONTYPE unsigned char
 #define ParseTOKENTYPE Token*
 typedef union {
   int yyinit;
   ParseTOKENTYPE yy0;
-  Expr* yy2;
-  OrderList* yy19;
-  Select* yy75;
-  Limit* yy78;
-  vector<string>* yy87;
+  OrderList* yy3;
+  Expr* yy22;
+  vector<string>* yy51;
+  Select* yy59;
+  Limit* yy82;
+  Folder* yy83;
 } YYMINORTYPE;
 #ifndef YYSTACKDEPTH
 #define YYSTACKDEPTH 100
@@ -77,8 +78,8 @@ typedef union {
 #define ParseARG_PDECL ,ParserContext *ctx
 #define ParseARG_FETCH ParserContext *ctx = yypParser->ctx
 #define ParseARG_STORE yypParser->ctx = ctx
-#define YYNSTATE 54
-#define YYNRULE 34
+#define YYNSTATE 56
+#define YYNRULE 36
 #define YY_NO_ACTION      (YYNSTATE+YYNRULE+2)
 #define YY_ACCEPT_ACTION  (YYNSTATE+YYNRULE+1)
 #define YY_ERROR_ACTION   (YYNSTATE+YYNRULE)
@@ -148,61 +149,61 @@ static const YYMINORTYPE yyzerominor = { 0 };
 **  yy_default[]       Default action for each state.
 */
 static const YYACTIONTYPE yy_action[] = {
- /*     0 */     9,   31,   17,    8,    8,    9,    9,   49,    6,    4,
- /*    10 */     7,   10,   10,   10,   10,   10,   10,    9,   45,   36,
- /*    20 */     8,    8,    9,    9,   15,    6,    4,    7,   10,   10,
- /*    30 */    10,   10,   10,   10,    9,   40,   40,   40,   40,    9,
- /*    40 */     9,   16,    6,    4,    7,   10,   10,   10,   10,   10,
- /*    50 */    10,    6,    4,    7,   10,   10,   10,   10,   10,   10,
- /*    60 */     4,    7,   10,   10,   10,   10,   10,   10,    7,   10,
- /*    70 */    10,   10,   10,   10,   10,   40,   40,   40,   40,   10,
- /*    80 */    10,   10,   10,   10,   10,   30,    3,   40,   40,   40,
- /*    90 */    40,   51,   23,   25,   41,   89,    5,   18,   37,   44,
- /*   100 */    44,   40,   40,   40,   40,   50,   28,   22,   52,   27,
- /*   110 */    43,   29,   24,   44,   44,   26,   44,   46,   44,   44,
- /*   120 */    53,   47,   44,   12,   44,    1,   42,   42,   19,    2,
- /*   130 */    48,   20,   32,   35,   21,   54,   38,   55,   33,   34,
- /*   140 */    39,   11,   90,   14,   90,   13,
+ /*     0 */    10,   41,   32,   19,    6,    6,   10,   10,   55,    2,
+ /*    10 */     5,    4,    9,    9,    9,    9,    9,    9,   10,   39,
+ /*    20 */    46,   37,    6,    6,   10,   10,   15,    2,    5,    4,
+ /*    30 */     9,    9,    9,    9,    9,    9,   10,   44,   44,   44,
+ /*    40 */    44,   53,   10,   10,   51,    2,    5,    4,    9,    9,
+ /*    50 */     9,    9,    9,    9,    2,    5,    4,    9,    9,    9,
+ /*    60 */     9,    9,    9,   16,    5,    4,    9,    9,    9,    9,
+ /*    70 */     9,    9,    4,    9,    9,    9,    9,    9,    9,    9,
+ /*    80 */     9,    9,    9,    9,    9,   44,   44,   44,   44,   44,
+ /*    90 */    44,   44,   44,   52,   17,   31,   29,    7,   44,   44,
+ /*   100 */    44,   44,   25,   55,   38,   54,   27,    3,   24,   55,
+ /*   110 */    30,   26,   45,   55,   93,   55,   28,   55,   55,   42,
+ /*   120 */    42,   22,   23,   55,   43,   11,   40,   18,    8,   55,
+ /*   130 */    20,   49,    1,   36,   21,   48,   33,   50,   13,   57,
+ /*   140 */    47,   34,   35,   12,   14,   56,
 };
 static const YYCODETYPE yy_lookahead[] = {
- /*     0 */     8,    1,    2,   11,   12,   13,   14,   46,   16,   17,
- /*    10 */    18,   19,   20,   21,   22,   23,   24,    8,   26,   41,
- /*    20 */    11,   12,   13,   14,   46,   16,   17,   18,   19,   20,
- /*    30 */    21,   22,   23,   24,    8,    4,    5,    6,    7,   13,
- /*    40 */    14,   46,   16,   17,   18,   19,   20,   21,   22,   23,
- /*    50 */    24,   16,   17,   18,   19,   20,   21,   22,   23,   24,
- /*    60 */    17,   18,   19,   20,   21,   22,   23,   24,   18,   19,
- /*    70 */    20,   21,   22,   23,   24,    4,    5,    6,    7,   19,
- /*    80 */    20,   21,   22,   23,   24,   34,   15,    4,    5,    6,
- /*    90 */     7,    8,   39,   39,   47,   44,   25,   35,   36,   46,
- /*   100 */    46,    4,    5,    6,    7,    8,   39,   39,   46,   39,
- /*   110 */    47,   39,   39,   46,   46,   39,   46,   39,   46,   46,
- /*   120 */     3,   37,   46,   10,   46,   45,   28,   29,   38,   27,
- /*   130 */    46,   40,   32,   30,   42,    0,   43,    0,    7,    9,
- /*   140 */     7,   31,   48,    9,   48,    9,
+ /*     0 */     8,   40,    1,    2,   12,   13,   14,   15,   47,   17,
+ /*    10 */    18,   19,   20,   21,   22,   23,   24,   25,    8,   27,
+ /*    20 */     7,   42,   12,   13,   14,   15,   47,   17,   18,   19,
+ /*    30 */    20,   21,   22,   23,   24,   25,    8,    4,    5,    6,
+ /*    40 */     7,    8,   14,   15,   47,   17,   18,   19,   20,   21,
+ /*    50 */    22,   23,   24,   25,   17,   18,   19,   20,   21,   22,
+ /*    60 */    23,   24,   25,   47,   18,   19,   20,   21,   22,   23,
+ /*    70 */    24,   25,   19,   20,   21,   22,   23,   24,   25,   20,
+ /*    80 */    21,   22,   23,   24,   25,    4,    5,    6,    7,    4,
+ /*    90 */     5,    6,    7,    8,   36,   37,   40,   16,    4,    5,
+ /*   100 */     6,    7,   40,   47,   35,   47,   40,   26,   40,   47,
+ /*   110 */    40,   40,   38,   47,   45,   47,   40,   47,   47,   29,
+ /*   120 */    30,   47,   40,   47,   49,   10,   49,   39,   28,   47,
+ /*   130 */    41,    3,   46,   31,   43,   11,   33,   44,    9,    0,
+ /*   140 */    48,    7,    9,   32,    9,    0,
 };
 #define YY_SHIFT_USE_DFLT (-9)
-#define YY_SHIFT_MAX 37
+#define YY_SHIFT_MAX 38
 static const short yy_shift_ofst[] = {
- /*     0 */     0,   83,   71,   71,   71,   71,   71,   71,   71,   71,
- /*    10 */    71,   31,   31,   97,   31,   98,   98,  117,  113,  102,
- /*    20 */   103,  100,   -8,    9,   26,   35,   35,   43,   50,   60,
- /*    30 */   135,  137,  131,  130,  133,  110,  134,  136,
+ /*     0 */     1,   33,   81,   81,   81,   81,   81,   81,   81,   81,
+ /*    10 */    81,   94,   94,   85,   94,   90,   90,  115,  100,  128,
+ /*    20 */   102,  103,  124,   -8,   10,   28,   37,   37,   46,   53,
+ /*    30 */    59,  129,  139,  134,  133,   13,  111,  135,  145,
 };
 #define YY_REDUCE_USE_DFLT (-40)
-#define YY_REDUCE_MAX 21
+#define YY_REDUCE_MAX 22
 static const signed char yy_reduce_ofst[] = {
- /*     0 */    51,   62,   53,   54,   67,   68,   70,   72,   73,   76,
- /*    10 */    78,  -22,   84,  -39,   -5,   47,   63,   80,   90,   91,
- /*    20 */    92,   93,
+ /*     0 */    69,   58,   76,   82,   70,   56,   62,   66,   68,  -39,
+ /*    10 */    71,   74,  -21,   -3,   16,   75,   77,   88,   89,   86,
+ /*    20 */    91,   93,   92,
 };
 static const YYACTIONTYPE yy_default[] = {
- /*     0 */    88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
- /*    10 */    88,   88,   88,   88,   88,   81,   81,   58,   65,   77,
- /*    20 */    83,   85,   88,   78,   74,   69,   75,   72,   71,   73,
- /*    30 */    88,   88,   88,   86,   88,   88,   84,   60,   56,   87,
- /*    40 */    59,   79,   82,   80,   68,   70,   76,   66,   67,   63,
- /*    50 */    64,   61,   62,   57,
+ /*     0 */    92,   92,   92,   92,   92,   92,   92,   92,   92,   92,
+ /*    10 */    92,   92,   92,   92,   92,   85,   85,   67,   81,   60,
+ /*    20 */    87,   89,   71,   92,   82,   78,   79,   73,   76,   75,
+ /*    30 */    77,   62,   92,   92,   90,   92,   92,   88,   92,   74,
+ /*    40 */    84,   80,   86,   83,   61,   68,   91,   69,   70,   59,
+ /*    50 */    58,   65,   66,   63,   64,   72,
 };
 #define YY_SZ_ACTTAB (int)(sizeof(yy_action)/sizeof(yy_action[0]))
 
@@ -298,16 +299,17 @@ void ParseTrace(FILE *TraceFILE, char *zTracePrompt){
 static const char *const yyTokenName[] = { 
   "$",             "QUIT",          "SELECT",        "DISTINCT",    
   "ID",            "STRING",        "FLOAT",         "INTEGER",     
-  "STAR",          "COMMA",         "FROM",          "PLUS",        
-  "MINUS",         "DIV",           "MOD",           "NOT",         
-  "OR",            "AND",           "LIKE",          "GT",          
-  "LT",            "EQ",            "GE",            "LE",          
-  "NE",            "LP",            "RP",            "WHERE",       
-  "ASC",           "DESC",          "ORDER",         "BY",          
-  "LIMIT",         "error",         "select",        "cols",        
-  "attrlist",      "folderlist",    "from",          "expr",        
-  "where",         "orderlist",     "orderby",       "limit",       
-  "stmt",          "distinct",      "name",          "order",       
+  "STAR",          "COMMA",         "FROM",          "RECURSIVE",   
+  "PLUS",          "MINUS",         "DIV",           "MOD",         
+  "NOT",           "OR",            "AND",           "LIKE",        
+  "GT",            "LT",            "EQ",            "GE",          
+  "LE",            "NE",            "LP",            "RP",          
+  "WHERE",         "ASC",           "DESC",          "ORDER",       
+  "BY",            "LIMIT",         "error",         "select",      
+  "cols",          "attrlist",      "folder",        "from",        
+  "expr",          "where",         "orderlist",     "orderby",     
+  "limit",         "stmt",          "distinct",      "name",        
+  "recursive",     "order",       
 };
 #endif /* NDEBUG */
 
@@ -327,28 +329,30 @@ static const char *const yyRuleName[] = {
  /*   9 */ "attrlist ::= attrlist COMMA name",
  /*  10 */ "attrlist ::= attrlist COMMA STAR",
  /*  11 */ "from ::=",
- /*  12 */ "from ::= FROM folderlist",
- /*  13 */ "folderlist ::= name",
- /*  14 */ "expr ::= name",
- /*  15 */ "expr ::= NOT expr",
- /*  16 */ "expr ::= LP expr RP",
- /*  17 */ "expr ::= expr AND expr",
- /*  18 */ "expr ::= expr OR expr",
- /*  19 */ "expr ::= expr LIKE expr",
- /*  20 */ "expr ::= expr PLUS|MINUS expr",
- /*  21 */ "expr ::= expr DIV|MOD|STAR expr",
- /*  22 */ "expr ::= expr GT|LT|EQ|GE|LE|NE expr",
- /*  23 */ "where ::=",
- /*  24 */ "where ::= WHERE expr",
- /*  25 */ "orderlist ::= name order",
- /*  26 */ "orderlist ::= orderlist COMMA name order",
- /*  27 */ "order ::=",
- /*  28 */ "order ::= ASC|DESC",
- /*  29 */ "orderby ::=",
- /*  30 */ "orderby ::= ORDER BY orderlist",
- /*  31 */ "limit ::=",
- /*  32 */ "limit ::= LIMIT INTEGER",
- /*  33 */ "limit ::= LIMIT INTEGER COMMA INTEGER",
+ /*  12 */ "from ::= FROM folder",
+ /*  13 */ "folder ::= name recursive",
+ /*  14 */ "recursive ::= RECURSIVE",
+ /*  15 */ "recursive ::=",
+ /*  16 */ "expr ::= name",
+ /*  17 */ "expr ::= NOT expr",
+ /*  18 */ "expr ::= LP expr RP",
+ /*  19 */ "expr ::= expr AND expr",
+ /*  20 */ "expr ::= expr OR expr",
+ /*  21 */ "expr ::= expr LIKE expr",
+ /*  22 */ "expr ::= expr PLUS|MINUS expr",
+ /*  23 */ "expr ::= expr DIV|MOD|STAR expr",
+ /*  24 */ "expr ::= expr GT|LT|EQ|GE|LE|NE expr",
+ /*  25 */ "where ::=",
+ /*  26 */ "where ::= WHERE expr",
+ /*  27 */ "orderlist ::= name order",
+ /*  28 */ "orderlist ::= orderlist COMMA name order",
+ /*  29 */ "order ::=",
+ /*  30 */ "order ::= ASC|DESC",
+ /*  31 */ "orderby ::=",
+ /*  32 */ "orderby ::= ORDER BY orderlist",
+ /*  33 */ "limit ::=",
+ /*  34 */ "limit ::= LIMIT INTEGER",
+ /*  35 */ "limit ::= LIMIT INTEGER COMMA INTEGER",
 };
 #endif /* NDEBUG */
 
@@ -415,7 +419,7 @@ static void yy_destructor(
   YYCODETYPE yymajor,     /* Type code for object to destroy */
   YYMINORTYPE *yypminor   /* The object to be destroyed */
 ){
-//  ParseARG_FETCH;
+  ParseARG_FETCH;
   switch( yymajor ){
     /* Here is inserted the actions which take place when a
     ** terminal or non-terminal is destroyed.  This can happen
@@ -438,32 +442,33 @@ static void yy_destructor(
     case 8: /* STAR */
     case 9: /* COMMA */
     case 10: /* FROM */
-    case 11: /* PLUS */
-    case 12: /* MINUS */
-    case 13: /* DIV */
-    case 14: /* MOD */
-    case 15: /* NOT */
-    case 16: /* OR */
-    case 17: /* AND */
-    case 18: /* LIKE */
-    case 19: /* GT */
-    case 20: /* LT */
-    case 21: /* EQ */
-    case 22: /* GE */
-    case 23: /* LE */
-    case 24: /* NE */
-    case 25: /* LP */
-    case 26: /* RP */
-    case 27: /* WHERE */
-    case 28: /* ASC */
-    case 29: /* DESC */
-    case 30: /* ORDER */
-    case 31: /* BY */
-    case 32: /* LIMIT */
+    case 11: /* RECURSIVE */
+    case 12: /* PLUS */
+    case 13: /* MINUS */
+    case 14: /* DIV */
+    case 15: /* MOD */
+    case 16: /* NOT */
+    case 17: /* OR */
+    case 18: /* AND */
+    case 19: /* LIKE */
+    case 20: /* GT */
+    case 21: /* LT */
+    case 22: /* EQ */
+    case 23: /* GE */
+    case 24: /* LE */
+    case 25: /* NE */
+    case 26: /* LP */
+    case 27: /* RP */
+    case 28: /* WHERE */
+    case 29: /* ASC */
+    case 30: /* DESC */
+    case 31: /* ORDER */
+    case 32: /* BY */
+    case 33: /* LIMIT */
 {
 #line 4 "parser.y"
  delete (yypminor->yy0); 
-#line 467 "parser.c"
+#line 472 "parser.c"
 }
       break;
     default:  break;   /* If no destructor action specified: do nothing */
@@ -639,7 +644,7 @@ static void yyStackOverflow(yyParser *yypParser, YYMINORTYPE *yypMinor){
 #line 13 "parser.y"
 
   printf("Stack overflowed\n");
-#line 643 "parser.c"
+#line 648 "parser.c"
    ParseARG_STORE; /* Suppress warning about unused %extra_argument var */
 }
 
@@ -696,40 +701,42 @@ static const struct {
   YYCODETYPE lhs;         /* Symbol on the left-hand side of the rule */
   unsigned char nrhs;     /* Number of right-hand side symbols in the rule */
 } yyRuleInfo[] = {
-  { 44, 1 },
-  { 44, 1 },
-  { 34, 7 },
   { 45, 1 },
-  { 45, 0 },
+  { 45, 1 },
+  { 35, 7 },
   { 46, 1 },
-  { 35, 1 },
-  { 36, 1 },
-  { 36, 1 },
-  { 36, 3 },
-  { 36, 3 },
-  { 38, 0 },
-  { 38, 2 },
-  { 37, 1 },
-  { 39, 1 },
-  { 39, 2 },
-  { 39, 3 },
-  { 39, 3 },
-  { 39, 3 },
-  { 39, 3 },
-  { 39, 3 },
-  { 39, 3 },
-  { 39, 3 },
-  { 40, 0 },
-  { 40, 2 },
-  { 41, 2 },
-  { 41, 4 },
-  { 47, 0 },
+  { 46, 0 },
   { 47, 1 },
-  { 42, 0 },
-  { 42, 3 },
+  { 36, 1 },
+  { 37, 1 },
+  { 37, 1 },
+  { 37, 3 },
+  { 37, 3 },
+  { 39, 0 },
+  { 39, 2 },
+  { 38, 2 },
+  { 48, 1 },
+  { 48, 0 },
+  { 40, 1 },
+  { 40, 2 },
+  { 40, 3 },
+  { 40, 3 },
+  { 40, 3 },
+  { 40, 3 },
+  { 40, 3 },
+  { 40, 3 },
+  { 40, 3 },
+  { 41, 0 },
+  { 41, 2 },
+  { 42, 2 },
+  { 42, 4 },
+  { 49, 0 },
+  { 49, 1 },
   { 43, 0 },
-  { 43, 2 },
-  { 43, 4 },
+  { 43, 3 },
+  { 44, 0 },
+  { 44, 2 },
+  { 44, 4 },
 };
 
 static void yy_accept(yyParser*);  /* Forward Declaration */
@@ -787,9 +794,9 @@ static void yy_reduce(
       case 0: /* stmt ::= select */
 #line 33 "parser.y"
 {
-  ctx->stmt = yymsp[0].minor.yy75;
+  ctx->stmt = yymsp[0].minor.yy59;
 }
-#line 793 "parser.c"
+#line 800 "parser.c"
         break;
       case 1: /* stmt ::= QUIT */
 #line 37 "parser.y"
@@ -797,239 +804,248 @@ static void yy_reduce(
   exit(0);
   yy_destructor(yypParser,1,&yymsp[0].minor);
 }
-#line 801 "parser.c"
+#line 808 "parser.c"
         break;
       case 2: /* select ::= SELECT distinct cols from where orderby limit */
 #line 41 "parser.y"
 {
-  yygotominor.yy75 = new Select();
+  yygotominor.yy59 = new Select();
   if (yymsp[-5].minor.yy0 != NULL) {
-    yygotominor.yy75->set_distinct(true);
+    yygotominor.yy59->set_distinct(true);
     delete yymsp[-5].minor.yy0;
   }
-  yygotominor.yy75->set_attrs(yymsp[-4].minor.yy87);
-  yygotominor.yy75->set_folders(yymsp[-3].minor.yy87);
-  yygotominor.yy75->set_where(yymsp[-2].minor.yy2);
-  yygotominor.yy75->set_orders(yymsp[-1].minor.yy19);
-  yygotominor.yy75->set_limit(yymsp[0].minor.yy78);
+  yygotominor.yy59->set_attrs(yymsp[-4].minor.yy51);
+  yygotominor.yy59->set_folder(yymsp[-3].minor.yy83);
+  yygotominor.yy59->set_where(yymsp[-2].minor.yy22);
+  yygotominor.yy59->set_orders(yymsp[-1].minor.yy3);
+  yygotominor.yy59->set_limit(yymsp[0].minor.yy82);
   yy_destructor(yypParser,2,&yymsp[-6].minor);
-}
-#line 818 "parser.c"
-        break;
-      case 3: /* distinct ::= DISTINCT */
-#line 54 "parser.y"
-{
-  yy_destructor(yypParser,3,&yymsp[0].minor);
 }
 #line 825 "parser.c"
         break;
-      case 5: /* name ::= ID|STRING|FLOAT|INTEGER */
-      case 28: /* order ::= ASC|DESC */ yytestcase(yyruleno==28);
-#line 57 "parser.y"
+      case 3: /* distinct ::= DISTINCT */
+      case 5: /* name ::= ID|STRING|FLOAT|INTEGER */ yytestcase(yyruleno==5);
+      case 14: /* recursive ::= RECURSIVE */ yytestcase(yyruleno==14);
+      case 30: /* order ::= ASC|DESC */ yytestcase(yyruleno==30);
+#line 54 "parser.y"
 {
   yygotominor.yy0 = yymsp[0].minor.yy0;
 }
-#line 833 "parser.c"
+#line 835 "parser.c"
         break;
       case 6: /* cols ::= attrlist */
-#line 61 "parser.y"
+#line 63 "parser.y"
 {
-  yygotominor.yy87 = yymsp[0].minor.yy87;
+  yygotominor.yy51 = yymsp[0].minor.yy51;
 }
-#line 840 "parser.c"
+#line 842 "parser.c"
         break;
       case 7: /* attrlist ::= STAR */
-#line 65 "parser.y"
+#line 67 "parser.y"
 {
-  yygotominor.yy87 = new vector<string>();
-  yygotominor.yy87->push_back(string("tperms"));
-  yygotominor.yy87->push_back(string("nlink"));
-  yygotominor.yy87->push_back(string("uname"));
-  yygotominor.yy87->push_back(string("gname"));
-  yygotominor.yy87->push_back(string("size"));
-  yygotominor.yy87->push_back(string("time"));
-  yygotominor.yy87->push_back(string("name"));
+  yygotominor.yy51 = new vector<string>();
+  yygotominor.yy51->push_back(string("tperms"));
+  yygotominor.yy51->push_back(string("nlink"));
+  yygotominor.yy51->push_back(string("uname"));
+  yygotominor.yy51->push_back(string("gname"));
+  yygotominor.yy51->push_back(string("size"));
+  yygotominor.yy51->push_back(string("time"));
+  yygotominor.yy51->push_back(string("name"));
   delete yymsp[0].minor.yy0;
 }
-#line 855 "parser.c"
+#line 857 "parser.c"
         break;
       case 8: /* attrlist ::= name */
-      case 13: /* folderlist ::= name */ yytestcase(yyruleno==13);
-#line 77 "parser.y"
+#line 79 "parser.y"
 {
-  yygotominor.yy87 = new vector<string>();
-  yygotominor.yy87->push_back(string(yymsp[0].minor.yy0->str));
+  yygotominor.yy51 = new vector<string>();
+  yygotominor.yy51->push_back(string(yymsp[0].minor.yy0->str));
   delete yymsp[0].minor.yy0;
 }
-#line 865 "parser.c"
+#line 866 "parser.c"
         break;
       case 9: /* attrlist ::= attrlist COMMA name */
-#line 83 "parser.y"
+#line 85 "parser.y"
 {
-  yygotominor.yy87 = yymsp[-2].minor.yy87;
-  yygotominor.yy87->push_back(string(yymsp[0].minor.yy0->str));
+  yygotominor.yy51 = yymsp[-2].minor.yy51;
+  yygotominor.yy51->push_back(string(yymsp[0].minor.yy0->str));
   delete yymsp[0].minor.yy0;
   yy_destructor(yypParser,9,&yymsp[-1].minor);
 }
-#line 875 "parser.c"
+#line 876 "parser.c"
         break;
       case 10: /* attrlist ::= attrlist COMMA STAR */
-#line 89 "parser.y"
+#line 91 "parser.y"
 {
-  yygotominor.yy87 = yymsp[-2].minor.yy87;
-  yygotominor.yy87->push_back(string("tperms"));
-  yygotominor.yy87->push_back(string("nlink"));
-  yygotominor.yy87->push_back(string("uname"));
-  yygotominor.yy87->push_back(string("gname"));
-  yygotominor.yy87->push_back(string("size"));
-  yygotominor.yy87->push_back(string("time"));
-  yygotominor.yy87->push_back(string("name"));
+  yygotominor.yy51 = yymsp[-2].minor.yy51;
+  yygotominor.yy51->push_back(string("tperms"));
+  yygotominor.yy51->push_back(string("nlink"));
+  yygotominor.yy51->push_back(string("uname"));
+  yygotominor.yy51->push_back(string("gname"));
+  yygotominor.yy51->push_back(string("size"));
+  yygotominor.yy51->push_back(string("time"));
+  yygotominor.yy51->push_back(string("name"));
   delete yymsp[0].minor.yy0;
   yy_destructor(yypParser,9,&yymsp[-1].minor);
 }
-#line 891 "parser.c"
+#line 892 "parser.c"
         break;
-      case 12: /* from ::= FROM folderlist */
-#line 102 "parser.y"
+      case 12: /* from ::= FROM folder */
+#line 104 "parser.y"
 {
-  yygotominor.yy87 = yymsp[0].minor.yy87;
+  yygotominor.yy83 = yymsp[0].minor.yy83;
   yy_destructor(yypParser,10,&yymsp[-1].minor);
 }
-#line 899 "parser.c"
+#line 900 "parser.c"
         break;
-      case 14: /* expr ::= name */
-#line 127 "parser.y"
+      case 13: /* folder ::= name recursive */
+#line 108 "parser.y"
 {
-  yygotominor.yy2 = new Value(yymsp[0].minor.yy0->ToVariant(), yymsp[0].major);
-  delete yymsp[0].minor.yy0;
-}
-#line 907 "parser.c"
-        break;
-      case 15: /* expr ::= NOT expr */
-#line 131 "parser.y"
-{
-  yygotominor.yy2 = new UnaryExpr(TK_NOT, yymsp[0].minor.yy2);
-  yy_destructor(yypParser,15,&yymsp[-1].minor);
-}
-#line 915 "parser.c"
-        break;
-      case 16: /* expr ::= LP expr RP */
-#line 134 "parser.y"
-{
-  yygotominor.yy2 = yymsp[-1].minor.yy2;
-  yy_destructor(yypParser,25,&yymsp[-2].minor);
-  yy_destructor(yypParser,26,&yymsp[0].minor);
-}
-#line 924 "parser.c"
-        break;
-      case 17: /* expr ::= expr AND expr */
-#line 137 "parser.y"
-{
-  yygotominor.yy2 = new BinaryExpr(TK_AND, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
-  yy_destructor(yypParser,17,&yymsp[-1].minor);
-}
-#line 932 "parser.c"
-        break;
-      case 18: /* expr ::= expr OR expr */
-#line 140 "parser.y"
-{
-  yygotominor.yy2 = new BinaryExpr(TK_OR, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
-  yy_destructor(yypParser,16,&yymsp[-1].minor);
-}
-#line 940 "parser.c"
-        break;
-      case 19: /* expr ::= expr LIKE expr */
-#line 143 "parser.y"
-{
-  yygotominor.yy2 = new BinaryExpr(TK_LIKE, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
-  yy_destructor(yypParser,18,&yymsp[-1].minor);
-}
-#line 948 "parser.c"
-        break;
-      case 20: /* expr ::= expr PLUS|MINUS expr */
-      case 21: /* expr ::= expr DIV|MOD|STAR expr */ yytestcase(yyruleno==21);
-      case 22: /* expr ::= expr GT|LT|EQ|GE|LE|NE expr */ yytestcase(yyruleno==22);
-#line 146 "parser.y"
-{
-  yygotominor.yy2 = new BinaryExpr(yymsp[-1].major, yymsp[-2].minor.yy2, yymsp[0].minor.yy2);
+  yygotominor.yy83 = new Folder();
+  yygotominor.yy83->name = string(yymsp[-1].minor.yy0->str);
+  yygotominor.yy83->recursive = false;
+  if (yymsp[0].minor.yy0 != NULL) {
+    yygotominor.yy83->recursive =true;
+    delete yymsp[0].minor.yy0;
+  }
   delete yymsp[-1].minor.yy0;
 }
-#line 958 "parser.c"
+#line 914 "parser.c"
         break;
-      case 24: /* where ::= WHERE expr */
-#line 160 "parser.y"
+      case 16: /* expr ::= name */
+#line 132 "parser.y"
 {
-  yygotominor.yy2 = yymsp[0].minor.yy2;
-  yy_destructor(yypParser,27,&yymsp[-1].minor);
+  yygotominor.yy22 = new Value(yymsp[0].minor.yy0->ToVariant(), yymsp[0].major);
+  delete yymsp[0].minor.yy0;
 }
-#line 966 "parser.c"
+#line 922 "parser.c"
         break;
-      case 25: /* orderlist ::= name order */
-#line 164 "parser.y"
+      case 17: /* expr ::= NOT expr */
+#line 136 "parser.y"
 {
-  yygotominor.yy19 = new OrderList();
-  yygotominor.yy19->attrs.push_back(string(yymsp[-1].minor.yy0->str));
-  if (yymsp[0].minor.yy0) yygotominor.yy19->dirs.push_back(yymsp[0].minor.yy0->value);
-  else yygotominor.yy19->dirs.push_back(TK_ASC);
+  yygotominor.yy22 = new UnaryExpr(TK_NOT, yymsp[0].minor.yy22);
+  yy_destructor(yypParser,16,&yymsp[-1].minor);
 }
-#line 976 "parser.c"
+#line 930 "parser.c"
         break;
-      case 26: /* orderlist ::= orderlist COMMA name order */
-#line 170 "parser.y"
+      case 18: /* expr ::= LP expr RP */
+#line 139 "parser.y"
 {
-  yymsp[-3].minor.yy19->attrs.push_back(string(yymsp[-1].minor.yy0->str));
-  if (yymsp[0].minor.yy0) yymsp[-3].minor.yy19->dirs.push_back(yymsp[0].minor.yy0->value);
-  else yymsp[-3].minor.yy19->dirs.push_back(TK_ASC);
-  yygotominor.yy19 = yymsp[-3].minor.yy19;
+  yygotominor.yy22 = yymsp[-1].minor.yy22;
+  yy_destructor(yypParser,26,&yymsp[-2].minor);
+  yy_destructor(yypParser,27,&yymsp[0].minor);
+}
+#line 939 "parser.c"
+        break;
+      case 19: /* expr ::= expr AND expr */
+#line 142 "parser.y"
+{
+  yygotominor.yy22 = new BinaryExpr(TK_AND, yymsp[-2].minor.yy22, yymsp[0].minor.yy22);
+  yy_destructor(yypParser,18,&yymsp[-1].minor);
+}
+#line 947 "parser.c"
+        break;
+      case 20: /* expr ::= expr OR expr */
+#line 145 "parser.y"
+{
+  yygotominor.yy22 = new BinaryExpr(TK_OR, yymsp[-2].minor.yy22, yymsp[0].minor.yy22);
+  yy_destructor(yypParser,17,&yymsp[-1].minor);
+}
+#line 955 "parser.c"
+        break;
+      case 21: /* expr ::= expr LIKE expr */
+#line 148 "parser.y"
+{
+  yygotominor.yy22 = new BinaryExpr(TK_LIKE, yymsp[-2].minor.yy22, yymsp[0].minor.yy22);
+  yy_destructor(yypParser,19,&yymsp[-1].minor);
+}
+#line 963 "parser.c"
+        break;
+      case 22: /* expr ::= expr PLUS|MINUS expr */
+      case 23: /* expr ::= expr DIV|MOD|STAR expr */ yytestcase(yyruleno==23);
+      case 24: /* expr ::= expr GT|LT|EQ|GE|LE|NE expr */ yytestcase(yyruleno==24);
+#line 151 "parser.y"
+{
+  yygotominor.yy22 = new BinaryExpr(yymsp[-1].major, yymsp[-2].minor.yy22, yymsp[0].minor.yy22);
+  delete yymsp[-1].minor.yy0;
+}
+#line 973 "parser.c"
+        break;
+      case 26: /* where ::= WHERE expr */
+#line 165 "parser.y"
+{
+  yygotominor.yy22 = yymsp[0].minor.yy22;
+  yy_destructor(yypParser,28,&yymsp[-1].minor);
+}
+#line 981 "parser.c"
+        break;
+      case 27: /* orderlist ::= name order */
+#line 169 "parser.y"
+{
+  yygotominor.yy3 = new OrderList();
+  yygotominor.yy3->attrs.push_back(string(yymsp[-1].minor.yy0->str));
+  if (yymsp[0].minor.yy0) yygotominor.yy3->dirs.push_back(yymsp[0].minor.yy0->value);
+  else yygotominor.yy3->dirs.push_back(TK_ASC);
+}
+#line 991 "parser.c"
+        break;
+      case 28: /* orderlist ::= orderlist COMMA name order */
+#line 175 "parser.y"
+{
+  yymsp[-3].minor.yy3->attrs.push_back(string(yymsp[-1].minor.yy0->str));
+  if (yymsp[0].minor.yy0) yymsp[-3].minor.yy3->dirs.push_back(yymsp[0].minor.yy0->value);
+  else yymsp[-3].minor.yy3->dirs.push_back(TK_ASC);
+  yygotominor.yy3 = yymsp[-3].minor.yy3;
   yy_destructor(yypParser,9,&yymsp[-2].minor);
 }
-#line 987 "parser.c"
+#line 1002 "parser.c"
         break;
-      case 30: /* orderby ::= ORDER BY orderlist */
-#line 183 "parser.y"
+      case 32: /* orderby ::= ORDER BY orderlist */
+#line 188 "parser.y"
 {
-  yygotominor.yy19 = yymsp[0].minor.yy19;
-  yy_destructor(yypParser,30,&yymsp[-2].minor);
-  yy_destructor(yypParser,31,&yymsp[-1].minor);
-}
-#line 996 "parser.c"
-        break;
-      case 31: /* limit ::= */
-#line 187 "parser.y"
-{
-  yygotominor.yy78 = new Limit();
-}
-#line 1003 "parser.c"
-        break;
-      case 32: /* limit ::= LIMIT INTEGER */
-#line 190 "parser.y"
-{
-  yygotominor.yy78 = new Limit();
-  yygotominor.yy78->limit = yymsp[0].minor.yy0->value;
-  delete yymsp[0].minor.yy0;
+  yygotominor.yy3 = yymsp[0].minor.yy3;
+  yy_destructor(yypParser,31,&yymsp[-2].minor);
   yy_destructor(yypParser,32,&yymsp[-1].minor);
 }
-#line 1013 "parser.c"
+#line 1011 "parser.c"
         break;
-      case 33: /* limit ::= LIMIT INTEGER COMMA INTEGER */
+      case 33: /* limit ::= */
+#line 192 "parser.y"
+{
+  yygotominor.yy82 = new Limit();
+}
+#line 1018 "parser.c"
+        break;
+      case 34: /* limit ::= LIMIT INTEGER */
 #line 195 "parser.y"
 {
-  yygotominor.yy78 = new Limit();
-  yygotominor.yy78->start = yymsp[-2].minor.yy0->value;
-  yygotominor.yy78->limit = yymsp[0].minor.yy0->value;
+  yygotominor.yy82 = new Limit();
+  yygotominor.yy82->limit = yymsp[0].minor.yy0->value;
+  delete yymsp[0].minor.yy0;
+  yy_destructor(yypParser,33,&yymsp[-1].minor);
+}
+#line 1028 "parser.c"
+        break;
+      case 35: /* limit ::= LIMIT INTEGER COMMA INTEGER */
+#line 200 "parser.y"
+{
+  yygotominor.yy82 = new Limit();
+  yygotominor.yy82->start = yymsp[-2].minor.yy0->value;
+  yygotominor.yy82->limit = yymsp[0].minor.yy0->value;
   delete yymsp[-2].minor.yy0;
   delete yymsp[0].minor.yy0;
-  yy_destructor(yypParser,32,&yymsp[-3].minor);
+  yy_destructor(yypParser,33,&yymsp[-3].minor);
   yy_destructor(yypParser,9,&yymsp[-1].minor);
 }
-#line 1026 "parser.c"
+#line 1041 "parser.c"
         break;
       default:
       /* (4) distinct ::= */ yytestcase(yyruleno==4);
       /* (11) from ::= */ yytestcase(yyruleno==11);
-      /* (23) where ::= */ yytestcase(yyruleno==23);
-      /* (27) order ::= */ yytestcase(yyruleno==27);
-      /* (29) orderby ::= */ yytestcase(yyruleno==29);
+      /* (15) recursive ::= */ yytestcase(yyruleno==15);
+      /* (25) where ::= */ yytestcase(yyruleno==25);
+      /* (29) order ::= */ yytestcase(yyruleno==29);
+      /* (31) orderby ::= */ yytestcase(yyruleno==31);
         break;
   };
   yygoto = yyRuleInfo[yyruleno].lhs;
@@ -1094,7 +1110,7 @@ static void yy_syntax_error(
   if (TOKEN) printf("syntax error near: %s\n", TOKEN->str);
   else printf("syntax error\n");
   ctx->error = true;
-#line 1098 "parser.c"
+#line 1114 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 
@@ -1114,7 +1130,7 @@ static void yy_accept(
   /* Here code is inserted which will be executed whenever the
   ** parser accepts */
 #line 6 "parser.y"
-#line 1118 "parser.c"
+#line 1134 "parser.c"
   ParseARG_STORE; /* Suppress warning about unused %extra_argument variable */
 }
 

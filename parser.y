@@ -22,8 +22,8 @@
 %type select {Select*}
 %type cols {vector<string>*}
 %type attrlist {vector<string>*}
-%type folderlist {vector<string>*}
-%type from {vector<string>*}
+%type folder {Folder*}
+%type from {Folder*}
 %type expr {Expr*}
 %type where {Expr*}
 %type orderlist {OrderList*}
@@ -45,13 +45,15 @@ select(A) ::= SELECT distinct(D) cols(C) from(F) where(W) orderby(O) limit(L). {
     delete D;
   }
   A->set_attrs(C);
-  A->set_folders(F);
+  A->set_folder(F);
   A->set_where(W);
   A->set_orders(O);
   A->set_limit(L);
 }
 
-distinct ::= DISTINCT.
+distinct(A) ::= DISTINCT(B). {
+  A = B;
+}
 distinct ::= .
 
 name(A) ::= ID|STRING|FLOAT|INTEGER(B). {
@@ -99,23 +101,26 @@ attrlist(A) ::= attrlist(B) COMMA STAR(C). {
 }
 
 from ::= .
-from(A) ::= FROM folderlist(B). {
+from(A) ::= FROM folder(B). {
   A = B;
 }
 
-folderlist(A) ::= name(B). {
-  A = new vector<string>();
-  A->push_back(string(B->str));
+folder(A) ::= name(B) recursive(C). {
+  A = new Folder();
+  A->name = string(B->str);
+  A->recursive = false;
+  if (C != NULL) {
+    A->recursive =true;
+    delete C;
+  }
   delete B;
 }
 
-/*
-folderlist(A) ::= folderlist(B) COMMA name(C). {
-  B->push_back(string(C->str));
-  delete C;
+recursive(A) ::= RECURSIVE(B). {
   A = B;
 }
-*/
+recursive ::= .
+
 %left PLUS MINUS.
 %left DIV MOD STAR.
 %right NOT.

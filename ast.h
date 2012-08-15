@@ -17,6 +17,11 @@ class Expr;
 struct OrderList;
 struct Limit;
 
+struct Folder {
+  string name;
+  bool recursive;
+};
+
 struct Limit {
   Limit() : start(0), limit(-1) {}
   uint32_t start;
@@ -44,7 +49,7 @@ class Statement {
 
 class Select : public Statement {
  public:
-  Select() : distinct_(false), attrs_(NULL), folders_(NULL), orders_(NULL) {}
+  Select() : distinct_(false), attrs_(NULL), folder_(NULL), orders_(NULL) {}
   ~Select();
 
  public:
@@ -52,19 +57,19 @@ class Select : public Statement {
 
  public:
   void set_attrs(vector<string> *attrs) { attrs_ = attrs; }
-  void set_folders(vector<string> *folders) { folders_ = folders; }
+  void set_folder(Folder *folder) { folder_ = folder; }
   void set_distinct(bool distinct) { distinct_ = distinct; }
   void set_where(Expr *where) { where_ = where; }
   void set_orders(OrderList *orders) { orders_ = orders; }
   void set_limit(Limit *limit) { limit_ = limit; }
 
  private:
-  Table *SelectDir(const string& dir);
+  Table *SelectDir(const string& dir, bool recursive);
 
  private:
   bool distinct_;
   vector<string> *attrs_;
-  vector<string> *folders_;
+  Folder *folder_;
   Expr *where_;
   OrderList *orders_;
   Limit *limit_;

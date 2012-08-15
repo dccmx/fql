@@ -1,39 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-
-#include "lexer.h"
-#include "parser.h"
-#include "parser.cc"
-
-#define INTEGER() { \
-  tk = new Token(TK_INTEGER, ts, te); \
-  Parse(parser, TK_INTEGER, tk, &context); \
-}
-#define FLOAT() {\
-  tk = new Token(TK_FLOAT, ts, te); \
-  Parse(parser, TK_FLOAT, tk, &context); \
-}
-
-#define KEYWORD(ID) { \
-  tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk, &context); \
-}
-
-#define SYMBOL(ID) { \
-  tk = new Token(ID, ts, te); \
-  Parse(parser, ID, tk, &context); \
-}
-
-#define STRING() { \
-  tk = new Token(TK_STRING, ts + 1, te - 1); \
-  Parse(parser, TK_STRING, tk, &context); \
-}
-
-#define ID() { \
-  tk = new Token(TK_ID, ts, te); \
-  Parse(parser, TK_ID, tk, &context); \
-}
-
 %%{
   machine lexer;
 
@@ -49,6 +13,7 @@
     /not/i { KEYWORD(TK_NOT) };
     /like/i { KEYWORD(TK_LIKE) };
     /from/i { KEYWORD(TK_FROM) };
+    /-r/i { KEYWORD(TK_RECURSIVE) };
     /order/i { KEYWORD(TK_ORDER) };
     /by/i { KEYWORD(TK_BY) };
     /asc/i { KEYWORD(TK_ASC) };
@@ -111,4 +76,3 @@ ParserContext Parse(char *str) {
 
   return context;
 }
-
