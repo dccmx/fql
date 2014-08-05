@@ -49,8 +49,14 @@ void Table::Print(bool head) {
   for (uint32_t i = 0; i < header_.size(); i++) {
     width[i] = 1;
     for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
-      int len = strlen(ri->get(header_[i])->c_str());
-      width[i] = max(len, width[i]);
+      Variant *str = ri->get(header_[i]); 
+      if (str) {
+        int len = strlen(str->c_str());
+        width[i] = max(len, width[i]);
+      } else {
+        printf("%s is not found\n", header_[i].c_str());
+        return;
+      }
     }
   }
 
