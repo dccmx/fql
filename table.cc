@@ -55,6 +55,7 @@ void Table::Print(bool head) {
         width[i] = max(len, width[i]);
       } else {
         printf("%s is not found\n", header_[i].c_str());
+        delete[] width;
         return;
       }
     }
