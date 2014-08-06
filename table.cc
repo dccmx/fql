@@ -54,7 +54,7 @@ void Table::Print(bool head) {
         int len = strlen(str->c_str());
         width[i] = max(len, width[i]);
       } else {
-        printf("%s is not found\n", header_[i].c_str());
+        printf("column %s is not found\n", header_[i].c_str());
         delete[] width;
         return;
       }

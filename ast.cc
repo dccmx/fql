@@ -28,6 +28,10 @@ Table *Select::SelectDir(const string& dir, bool recursive) {
   }
   tb->rows_ = rows;
 
+  if (!tb->rows_.size()) {
+    printf("no files conform to where \"blabla..\" \n");
+    return tb;
+  }
   rows.clear();
 
   uint32_t start = limit_->start;
@@ -37,11 +41,15 @@ Table *Select::SelectDir(const string& dir, bool recursive) {
   }
   tb->rows_ = rows;
 
+  if (!tb->rows_.size()) {
+    printf("no files conform to limit \"blabla..\" \n");
+  }
+
   return tb;
 }
 Table *Select::Execute() {
   if (folder_ == NULL) {
-    return SelectDir(".", folder_->recursive);
+    return SelectDir(".", true);
   }
 
   return SelectDir(folder_->name, folder_->recursive);
