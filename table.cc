@@ -37,24 +37,17 @@ const Row& Row::operator=(const Row& other) {
 }
 
 void Table::Print(bool head) {
-  if (head) {
-    for (vector<string>::iterator hi = header_.begin(); hi != header_.end(); ++hi) {
-      printf("%s ", hi->c_str());
-    }
-    printf("\n");
-  }
-
   int *width = new int[header_.size()];
 
   for (uint32_t i = 0; i < header_.size(); i++) {
     width[i] = 1;
     for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
-      Variant *str = ri->get(header_[i]); 
-      if (str) {
-        int len = strlen(str->c_str());
+      Variant *var = ri->get(header_[i]); 
+      if (var) {
+        int len = strlen(var->c_str());
         width[i] = max(len, width[i]);
       } else {
-        printf("column %s is not found\n", header_[i].c_str());
+        printf("column %s is not available\n", header_[i].c_str());
         delete[] width;
         return;
       }
@@ -62,6 +55,16 @@ void Table::Print(bool head) {
   }
 
   width[header_.size() - 1] = -1;
+
+  if (head) {
+    uint32_t i = 0;
+    for (vector<string>::iterator hi = header_.begin(); hi != header_.end(); ++hi) {
+      char fmt[10];
+      sprintf(fmt, "%%%d.*s ", width[i]);
+      printf(fmt, width[i++], hi->c_str());
+    }
+    printf("\n");
+  }
 
   for (vector<Row>::iterator ri = rows_.begin(); ri != rows_.end(); ++ri) {
     for (uint32_t i = 0; i < header_.size(); i++) {
